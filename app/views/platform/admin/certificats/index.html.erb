@@ -1,0 +1,52 @@
+<div class="lms-page-header">
+  <h1>Certificats</h1>
+  <div class="lms-filter-tabs">
+    <%= link_to "Tous",          platform_admin_certificats_path,                   class: "lms-tab #{params[:statut].blank? ? 'active' : ''}" %>
+    <%= link_to "En attente",    platform_admin_certificats_path(statut: "en_attente"), class: "lms-tab #{params[:statut] == 'en_attente' ? 'active' : ''}" %>
+    <%= link_to "Approuvés",     platform_admin_certificats_path(statut: "approuve"),   class: "lms-tab #{params[:statut] == 'approuve' ? 'active' : ''}" %>
+  </div>
+</div>
+
+<div class="lms-table-wrap">
+  <table class="lms-table">
+    <thead>
+      <tr>
+        <th>Numéro</th>
+        <th>Élève</th>
+        <th>Formation</th>
+        <th>Demandé le</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @certificats.each do |cert| %>
+        <tr>
+          <td><code><%= cert.numero %></code></td>
+          <td><%= cert.user.nom_complet %></td>
+          <td><%= cert.cours_support.titre %></td>
+          <td><%= cert.created_at.strftime("%d/%m/%Y") %></td>
+          <td>
+            <span class="lms-badge lms-badge--<%= cert.statut %>">
+              <%= cert.statut.humanize %>
+            </span>
+          </td>
+          <td class="lms-table-actions">
+            <%= link_to "Voir", platform_admin_certificat_path(cert), class: "lms-btn-xs" %>
+            <% if cert.en_attente? %>
+              <%= button_to "✓ Approuver", approuver_platform_admin_certificat_path(cert),
+                    method: :patch, class: "lms-btn-xs lms-btn-xs--success",
+                    data: { turbo_confirm: "Approuver ce certificat ?" } %>
+              <%= button_to "✗ Refuser", refuser_platform_admin_certificat_path(cert),
+                    method: :patch, class: "lms-btn-xs lms-btn-xs--danger",
+                    data: { turbo_confirm: "Refuser ce certificat ?" } %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      <% if @certificats.empty? %>
+        <tr><td colspan="6" class="lms-table-empty">Aucun certificat.</td></tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

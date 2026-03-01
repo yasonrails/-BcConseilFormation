@@ -1,0 +1,36 @@
+<div class="lms-cert-document" id="cert-<%= @certificat.id %>">
+  <div class="lms-cert-doc-inner">
+    <div class="lms-cert-doc-header">
+      <div class="lms-cert-doc-logo">BC Conseil Formation</div>
+      <div class="lms-cert-doc-label">CERTIFICAT DE FORMATION</div>
+    </div>
+
+    <div class="lms-cert-doc-body">
+      <p class="lms-cert-doc-intro">Nous certifions que</p>
+      <h2 class="lms-cert-doc-name"><%= @certificat.user.nom_complet %></h2>
+      <p class="lms-cert-doc-text">
+        a suivi et validé avec succès la formation
+      </p>
+      <h3 class="lms-cert-doc-formation"><%= @certificat.cours_support.titre %></h3>
+      <% if @certificat.cours_support.duree_label.present? %>
+        <p class="lms-cert-doc-duree">Durée : <%= @certificat.cours_support.duree_label %></p>
+      <% end %>
+      <p class="lms-cert-doc-date">
+        Délivré le <%= @certificat.approuve_le&.strftime("%d %B %Y") %>
+      </p>
+      <p class="lms-cert-doc-numero">N° <%= @certificat.numero %></p>
+    </div>
+
+    <div class="lms-cert-doc-footer">
+      <div class="lms-cert-doc-sig">
+        <div class="lms-cert-doc-sig-line"></div>
+        <p><%= @certificat.approuve_par&.nom_complet || "BC Conseil Formation" %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lms-cert-actions">
+  <%= link_to "← Mes certificats", platform_certificats_path, class: "lms-btn lms-btn--ghost" %>
+  <button onclick="window.print()" class="lms-btn">Imprimer / Télécharger PDF</button>
+</div>

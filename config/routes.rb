@@ -49,6 +49,14 @@ Rails.application.routes.draw do
 
       # Générateur IA
       get "/generateur" => "generateur#index", as: "generateur"
+
+      # Certificats
+      resources :certificats, only: [:index, :show] do
+        member do
+          patch :approuver
+          patch :refuser
+        end
+      end
     end
 
     # ── ÉLÈVE ────────────────────────────────────
@@ -58,6 +66,10 @@ Rails.application.routes.draw do
     get  "/module/:id"    => "eleve/modules#show",        as: "module"
     post "/module/:id/progression" => "eleve/progressions#create", as: "module_progression"
     get  "/profil"        => "eleve/profil#index",        as: "profil"
+
+    # Certificats élève
+    resources :certificats, path: "certificats", controller: "eleve/certificats",
+                            only: [:index, :show, :create]
   end
 
   get "up" => "rails/health#show", as: :rails_health_check

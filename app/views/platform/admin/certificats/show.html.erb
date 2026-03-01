@@ -1,0 +1,53 @@
+<div class="lms-page-header">
+  <div>
+    <h1>Certificat <code><%= @certificat.numero %></code></h1>
+    <p class="lms-subtitle">
+      <%= @certificat.user.nom_complet %> — <%= @certificat.cours_support.titre %>
+    </p>
+  </div>
+  <%= link_to "← Retour", platform_admin_certificats_path, class: "lms-btn lms-btn--ghost" %>
+</div>
+
+<div class="lms-detail-grid">
+  <div class="lms-card">
+    <h3>Informations</h3>
+    <dl class="lms-dl">
+      <dt>Élève</dt>        <dd><%= @certificat.user.nom_complet %> (<%= @certificat.user.email %>)</dd>
+      <dt>Formation</dt>    <dd><%= @certificat.cours_support.titre %></dd>
+      <dt>Numéro</dt>       <dd><code><%= @certificat.numero %></code></dd>
+      <dt>Demandé le</dt>   <dd><%= @certificat.created_at.strftime("%d/%m/%Y à %H:%M") %></dd>
+      <dt>Statut</dt>       <dd><span class="lms-badge lms-badge--<%= @certificat.statut %>"><%= @certificat.statut %></span></dd>
+      <% if @certificat.approuve_par %>
+        <dt>Traité par</dt> <dd><%= @certificat.approuve_par.nom_complet %> le <%= @certificat.approuve_le&.strftime("%d/%m/%Y") %></dd>
+      <% end %>
+      <% if @certificat.message_admin.present? %>
+        <dt>Message</dt>    <dd><%= @certificat.message_admin %></dd>
+      <% end %>
+    </dl>
+  </div>
+
+  <% if @certificat.en_attente? %>
+    <div class="lms-card">
+      <h3>Décision</h3>
+      <%= form_with url: approuver_platform_admin_certificat_path(@certificat), method: :patch do |f| %>
+        <div class="lms-field">
+          <%= f.label :message_admin, "Message (optionnel)" %>
+          <%= f.text_area :message_admin, rows: 3, class: "lms-input" %>
+        </div>
+        <div class="lms-actions">
+          <%= f.submit "✓ Approuver le certificat", class: "lms-btn lms-btn--success" %>
+        </div>
+      <% end %>
+
+      <%= form_with url: refuser_platform_admin_certificat_path(@certificat), method: :patch do |f| %>
+        <div class="lms-field">
+          <%= f.label :message_admin, "Motif du refus" %>
+          <%= f.text_area :message_admin, rows: 3, class: "lms-input" %>
+        </div>
+        <div class="lms-actions">
+          <%= f.submit "✗ Refuser", class: "lms-btn lms-btn--danger" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

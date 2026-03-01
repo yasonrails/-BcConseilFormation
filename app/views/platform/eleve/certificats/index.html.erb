@@ -1,0 +1,34 @@
+<div class="lms-page-header">
+  <h1>Mes Certificats</h1>
+</div>
+
+<% if @certificats.empty? %>
+  <div class="lms-empty">
+    <p>Vous n'avez pas encore de certificat.</p>
+    <p>Terminez tous les modules d'une formation pour en faire la demande.</p>
+    <%= link_to "Voir mes formations", platform_mes_formations_path, class: "lms-btn" %>
+  </div>
+<% else %>
+  <div class="lms-cert-grid">
+    <% @certificats.each do |cert| %>
+      <div class="lms-cert-card lms-cert-card--<%= cert.statut %>">
+        <div class="lms-cert-header">
+          <span class="lms-cert-num"><%= cert.numero %></span>
+          <span class="lms-badge lms-badge--<%= cert.statut %>"><%= cert.statut.humanize %></span>
+        </div>
+        <h3 class="lms-cert-title"><%= cert.cours_support.titre %></h3>
+        <p class="lms-cert-date">Demandé le <%= cert.created_at.strftime("%d/%m/%Y") %></p>
+        <% if cert.approuve? %>
+          <p class="lms-cert-approved">
+            ✓ Validé le <%= cert.approuve_le&.strftime("%d/%m/%Y") %>
+          </p>
+          <%= link_to "Télécharger", platform_certificat_path(cert), class: "lms-btn lms-btn--sm" %>
+        <% elsif cert.en_attente? %>
+          <p class="lms-cert-pending">⏳ En cours de validation (48h)</p>
+        <% elsif cert.refuse? %>
+          <p class="lms-cert-refused">✗ Refusé<%= cert.message_admin.present? ? " : #{cert.message_admin}" : "" %></p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
