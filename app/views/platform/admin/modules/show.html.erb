@@ -1,0 +1,102 @@
+<div class="platform-page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <%= link_to "← #{@support.titre}", platform_admin_support_path(@support), class: "back-link" %>
+      <h1 class="page-title"><%= @module.titre %></h1>
+      <span class="status-badge status-<%= @module.statut %>"><%= @module.statut %></span>
+    </div>
+    <div class="topbar-right">
+      <% unless @module.publie? %>
+        <%= button_to "Publier", publier_platform_admin_support_module_path(@support, @module), method: :patch, class: "btn bp btn-sm" %>
+      <% end %>
+      <%= link_to "Modifier", edit_platform_admin_support_module_path(@support, @module), class: "btn btn-sm" %>
+      <%= button_to "Supprimer", platform_admin_support_module_path(@support, @module), method: :delete,
+           data: { turbo_confirm: "Supprimer ce module ?" }, class: "btn btn-danger btn-sm" %>
+    </div>
+  </div>
+
+  <div class="show-grid">
+    <div class="show-main">
+      <div class="content-panel">
+        <h2 class="cp-title">Contenu du module</h2>
+        <% if @module.objectifs_list.any? %>
+          <div class="objectifs-block">
+            <h4>Objectifs pédagogiques</h4>
+            <ul>
+              <% @module.objectifs_list.each do |obj| %>
+                <li><%= obj %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <div class="cp-text"><%= @module.contenu.present? ? @module.contenu.html_safe : "<em>Aucun contenu.</em>".html_safe %></div>
+      </div>
+
+      <%# Quiz %>
+      <div class="content-panel">
+        <div class="cp-header">
+          <h2 class="cp-title">Quiz (<%= @quiz.count %> question(s))</h2>
+          <div
+            data-controller="generateur-quiz"
+            data-generateur-quiz-url-value="<%= generer_quiz_platform_admin_support_module_path(@support, @module) %>">
+            <button class="btn bp btn-sm" data-action="click->generateur-quiz#generer">
+              ✨ Générer quiz IA
+            </button>
+            <div data-generateur-quiz-target="status" style="display:none;margin-top:8px;font-size:12px;"></div>
+          </div>
+        </div>
+        <% if @quiz.any? %>
+          <div class="quiz-admin-list">
+            <% @quiz.each_with_index do |q, i| %>
+              <div class="qa-item">
+                <div class="qa-num">Q<%= i + 1 %></div>
+                <div class="qa-body">
+                  <p class="qa-enonce"><%= q.enonce %></p>
+                  <div class="qa-options">
+                    <% q.options_list.each_with_index do |opt, j| %>
+                      <div class="qa-opt <%= j == q.bonne_reponse ? 'qa-opt--correct' : '' %>">
+                        <span class="qa-opt-letter"><%= ("A".ord + j).chr %></span>
+                        <%= opt %>
+                        <% if j == q.bonne_reponse %><span class="qa-check">✓</span><% end %>
+                      </div>
+                    <% end %>
+                  </div>
+                  <% if q.explication.present? %><p class="qa-explication">💡 <%= q.explication %></p><% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="cp-empty">Aucune question. Générez-en avec l'IA ci-dessus.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="show-aside">
+      <div class="aside-panel">
+        <h3 class="ap-title">Informations</h3>
+        <div class="ap-stat"><span>Ordre</span><strong><%= @module.ordre + 1 %></strong></div>
+        <% if @module.duree_estimee.present? %>
+          <div class="ap-stat"><span>Durée</span><strong><%= @module.duree_estimee %></strong></div>
+        <% end %>
+        <div class="ap-stat"><span>Questions quiz</span><strong><%= @quiz.count %></strong></div>
+        <div class="ap-stat"><span>Modules terminés</span><strong><%= @progressions.count %></strong></div>
+      </div>
+
+      <% if @progressions.any? %>
+        <div class="aside-panel">
+          <h3 class="ap-title">Élèves ayant terminé</h3>
+          <% @progressions.each do |prog| %>
+            <div class="ap-eleve">
+              <div class="dp-avatar-sm"><%= prog.user.nom_complet.first(2).upcase %></div>
+              <div>
+                <div class="ap-eleve-name"><%= prog.user.nom_complet %></div>
+                <% if prog.score %><div class="ap-eleve-date">Score : <%= prog.score %>%</div><% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

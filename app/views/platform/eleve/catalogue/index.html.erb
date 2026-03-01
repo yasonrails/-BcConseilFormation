@@ -1,0 +1,39 @@
+<div class="platform-page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1 class="page-title">Catalogue des formations</h1>
+      <p class="page-sub"><%= @formations.count %> formation(s) disponible(s)</p>
+    </div>
+  </div>
+
+  <% if @formations.any? %>
+    <div class="catalogue-grid">
+      <% @formations.each do |formation| %>
+        <% inscrit = @mes_ids.include?(formation.id) %>
+        <div class="catalogue-card <%= 'catalogue-card--inscrit' if inscrit %>">
+          <div class="cc-head">
+            <% if inscrit %>
+              <span class="cc-badge cc-badge--inscrit">✓ Inscrit</span>
+            <% end %>
+            <div class="cc-modules-count"><%= formation.module_formations.publies.count %> module(s)</div>
+          </div>
+          <h3 class="cc-title"><%= formation.titre %></h3>
+          <p class="cc-desc"><%= formation.description.to_s.truncate(120) %></p>
+          <div class="cc-footer">
+            <% if inscrit %>
+              <%= link_to "Continuer →", platform_mes_formations_path, class: "btn bp btn-sm" %>
+            <% else %>
+              <%= button_to "S'inscrire", platform_inscription_path(formation.id), method: :post, class: "btn bp btn-sm" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <div class="es-icon">📚</div>
+      <h3>Aucune formation disponible</h3>
+      <p>Les formations publiées par votre organisme apparaîtront ici.</p>
+    </div>
+  <% end %>
+</div>

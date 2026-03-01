@@ -1,0 +1,94 @@
+<%# ══════════════════════════════════════════════
+    FORMATION — Section complète
+══════════════════════════════════════════════ %>
+<section class="formation-section" id="formation">
+
+  <%# ── Intro / hero ── %>
+  <div class="formation-hero">
+    <div class="formation-hero-text">
+      <span class="formation-tag reveal">Nos formations</span>
+      <h2 class="formation-title reveal">
+        Des programmes <em>complets</em><br>et sur mesure
+      </h2>
+      <p class="formation-intro reveal">
+        BC CONSEIL vous propose dans le cadre de la formation des programmes complets pour les entreprises et également des programmes personnalisés pour vos projets — reconversion professionnelle, projet personnel, développement des compétences…
+      </p>
+      <p class="formation-intro reveal">
+        BC CONSEIL intervient spécifiquement dans le domaine des <strong>RH</strong> et du <strong>droit</strong> (contrat, social…) et propose également des ateliers et des formations sur mesure en fonction de vos besoins personnels, professionnels ou stratégiques.
+      </p>
+    </div>
+    <div class="formation-hero-visual reveal">
+      <div class="formation-img-wrap">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=700&q=80"
+             alt="Deux professionnels en consultation, l'un prenant des notes sur un clipboard"
+             loading="lazy">
+        <div class="formation-img-badge">Formation · Conseil · Sur mesure</div>
+      </div>
+    </div>
+  </div>
+
+  <%# ── 3 domaines ── %>
+  <div class="formation-domains">
+    <% [
+      {
+        num:   "01",
+        img:   "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600&q=80",
+        alt:   "Équipe RH en réunion",
+        tag:   "Ressources humaines",
+        title: "L'humain au cœur<br>de nos formations",
+        desc:  "Les offres de formation proposées par BC CONSEIL s'articulent autour des missions fondamentales des RH : recrutement, formation, évaluation, rémunération, mobilité, ainsi que la gestion des compétences et des talents.",
+        extra: "En plus de ces domaines clés, nous abordons des sujets cruciaux tels que la santé au travail et la prévention des risques psychosociaux. Notre approche intègre les pratiques RH les plus innovantes pour répondre aux défis actuels et futurs.",
+        items: ["Recrutement & marque employeur", "Évaluation & rémunération", "Mobilité & gestion des talents", "Santé au travail & risques psychosociaux"]
+      },
+      {
+        num:   "02",
+        img:   "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&q=80",
+        alt:   "Cabinet juridique, livres de droit",
+        tag:   "Droit",
+        title: "Maîtriser les aspects<br>juridiques essentiels",
+        desc:  "BC CONSEIL vous propose des formations en droit, conçues pour fournir les compétences juridiques essentielles dans des domaines clés tels que le droit des contrats, le droit du travail, le droit social…",
+        extra: "Ces formations sont destinées aux professionnels mais également à toute personne souhaitant approfondir ses connaissances et maîtriser les aspects juridiques actuels.",
+        items: ["Droit des contrats", "Droit du travail & droit social", "Conformité & réglementation", "Procédures & contentieux"]
+      },
+      {
+        num:   "03",
+        img:   "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&q=80",
+        alt:   "Équipe travaillant sur une stratégie d'organisation",
+        tag:   "Organisation",
+        title: "Des programmes taillés<br>pour votre réalité",
+        desc:  "BC CONSEIL vous propose des formations sur mesure, conçues spécifiquement pour répondre aux besoins uniques de votre organisation ou de vos projets personnels.",
+        extra: "Nos experts collaborent avec vous pour créer des programmes personnalisés adaptés à vos objectifs, à votre secteur d'activité et à vos défis spécifiques — afin de garantir un impact maximal et une application directe dans votre quotidien.",
+        items: ["Organisation interne & processus", "Stratégie d'entreprise", "Management & leadership", "Développement des compétences"]
+      }
+    ].each_with_index do |domain, i| %>
+      <div class="formation-domain <%= i.even? ? '' : 'formation-domain--reverse' %> reveal">
+        <div class="fd-visual">
+          <div class="fd-img-wrap">
+            <img src="<%= domain[:img] %>" alt="<%= domain[:alt] %>" loading="lazy">
+          </div>
+          <div class="fd-num"><%= domain[:num] %></div>
+        </div>
+        <div class="fd-content">
+          <span class="fd-tag"><%= domain[:tag] %></span>
+          <h3 class="fd-title"><%= domain[:title].html_safe %></h3>
+          <p class="fd-desc"><%= domain[:desc] %></p>
+          <p class="fd-desc"><%= domain[:extra] %></p>
+          <ul class="fd-list">
+            <% domain[:items].each do |item| %>
+              <li><%= item %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <%# ── CTA inline ── %>
+  <div class="formation-footer-cta">
+    <div class="formation-footer-inner">
+      <p class="ffc-text reveal">Besoin d'un programme <em>sur mesure</em> ?</p>
+      <a href="mailto:contact@bcconseilformation.fr" class="btn-dark reveal d2">Nous contacter →</a>
+    </div>
+  </div>
+
+</section>

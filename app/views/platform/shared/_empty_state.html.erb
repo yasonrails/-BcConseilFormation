@@ -1,0 +1,22 @@
+<%#
+  Platform empty-state widget.
+
+  Locals (all optional with defaults):
+    icon      (String) — emoji or HTML icon (default: "📂")
+    title     (String) — heading text
+    body      (String) — description paragraph
+    cta_label (String) — call-to-action button label (omit to hide button)
+    cta_path  (String) — call-to-action button path
+%>
+<div class="gen-empty">
+  <div class="gen-empty-icon"><%= local_assigns.fetch(:icon, "📂") %></div>
+  <% if local_assigns[:title].present? %>
+    <h3><%= title %></h3>
+  <% end %>
+  <% if local_assigns[:body].present? %>
+    <p><%= body %></p>
+  <% end %>
+  <% if local_assigns[:cta_label].present? && local_assigns[:cta_path].present? %>
+    <%= link_to cta_label, cta_path, class: "btn bp" %>
+  <% end %>
+</div>

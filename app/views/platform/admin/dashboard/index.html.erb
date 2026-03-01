@@ -1,0 +1,124 @@
+<div class="platform-page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1 class="page-title">Tableau de bord</h1>
+      <p class="page-sub">Vue d'ensemble de la plateforme</p>
+    </div>
+    <div class="topbar-right">
+      <%= link_to platform_admin_new_support_path, class: "btn bp" do %>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px"><path d="M8 2v12M2 8h12"/></svg>
+        Nouveau support
+      <% end %>
+    </div>
+  </div>
+
+  <%# ── Métriques ── %>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-icon" style="background:rgba(28,95,255,.1)">
+        <svg viewBox="0 0 16 16" fill="none" stroke="rgba(28,95,255,1)" stroke-width="1.5" style="width:20px;height:20px"><path d="M4 1h6l4 4v10H4V1z"/><path d="M10 1v4h4"/></svg>
+      </div>
+      <div>
+        <div class="metric-val"><%= @total_supports %></div>
+        <div class="metric-lbl">Supports de cours</div>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon" style="background:rgba(52,211,153,.1)">
+        <svg viewBox="0 0 16 16" fill="none" stroke="rgba(52,211,153,1)" stroke-width="1.5" style="width:20px;height:20px"><circle cx="6" cy="5" r="2.5"/><path d="M1 13c0-2.76 2.24-5 5-5s5 2.24 5 5"/><circle cx="12" cy="5" r="2"/></svg>
+      </div>
+      <div>
+        <div class="metric-val"><%= @total_eleves %></div>
+        <div class="metric-lbl">Élèves inscrits</div>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon" style="background:rgba(245,158,11,.1)">
+        <svg viewBox="0 0 16 16" fill="none" stroke="rgba(245,158,11,1)" stroke-width="1.5" style="width:20px;height:20px"><path d="M8 1L14 4.5V11L8 14.5L2 11V4.5L8 1z"/></svg>
+      </div>
+      <div>
+        <div class="metric-val"><%= @total_modules %></div>
+        <div class="metric-lbl">Modules créés</div>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon" style="background:rgba(139,92,246,.1)">
+        <svg viewBox="0 0 16 16" fill="none" stroke="rgba(139,92,246,1)" stroke-width="1.5" style="width:20px;height:20px"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      </div>
+      <div>
+        <div class="metric-val"><%= @supports_publies %></div>
+        <div class="metric-lbl">Supports publiés</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash-grid">
+    <%# ── Supports récents ── %>
+    <div class="dash-panel">
+      <div class="dp-header">
+        <h2 class="dp-title">Supports récents</h2>
+        <%= link_to "Voir tous →", platform_admin_supports_path, class: "dp-link" %>
+      </div>
+      <div class="dp-list">
+        <% if @supports_recents.any? %>
+          <% @supports_recents.each do |s| %>
+            <div class="dp-item">
+              <div class="dp-item-left">
+                <div class="dp-item-name"><%= link_to s.titre, platform_admin_support_path(s) %></div>
+                <div class="dp-item-meta"><%= s.module_formations.count %> module(s) · <%= s.created_at.strftime("%d/%m/%Y") %></div>
+              </div>
+              <span class="status-badge status-<%= s.statut %>"><%= s.statut %></span>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="dp-empty">Aucun support créé. <%= link_to "Créer le premier →", platform_admin_new_support_path %></div>
+        <% end %>
+      </div>
+    </div>
+
+    <%# ── Élèves récents ── %>
+    <div class="dash-panel">
+      <div class="dp-header">
+        <h2 class="dp-title">Derniers élèves</h2>
+        <%= link_to "Voir tous →", platform_admin_eleves_path, class: "dp-link" %>
+      </div>
+      <div class="dp-list">
+        <% if @eleves_recents.any? %>
+          <% @eleves_recents.each do |u| %>
+            <div class="dp-item">
+              <div class="dp-avatar-sm"><%= u.nom_complet.first(2).upcase %></div>
+              <div class="dp-item-left">
+                <div class="dp-item-name"><%= link_to u.nom_complet, platform_admin_eleve_path(u) %></div>
+                <div class="dp-item-meta"><%= u.inscriptions.count %> inscription(s) · <%= u.created_at.strftime("%d/%m/%Y") %></div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="dp-empty">Aucun élève inscrit pour l'instant.</div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <%# ── Inscriptions récentes ── %>
+  <div class="dash-panel" style="margin-top:16px;">
+    <div class="dp-header">
+      <h2 class="dp-title">Inscriptions récentes</h2>
+    </div>
+    <div class="dp-list">
+      <% if @inscriptions_recentes.any? %>
+        <% @inscriptions_recentes.each do |insc| %>
+          <div class="dp-item">
+            <div class="dp-avatar-sm"><%= insc.user.nom_complet.first(2).upcase %></div>
+            <div class="dp-item-left">
+              <div class="dp-item-name"><%= insc.user.nom_complet %></div>
+              <div class="dp-item-meta">s'est inscrit à <strong><%= insc.cours_support.titre %></strong> · <%= insc.created_at.strftime("%d/%m à %H:%M") %></div>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="dp-empty">Aucune inscription récente.</div>
+      <% end %>
+    </div>
+  </div>
+</div>

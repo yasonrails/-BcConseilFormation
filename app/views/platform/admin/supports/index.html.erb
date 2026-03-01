@@ -1,0 +1,52 @@
+<div class="platform-page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1 class="page-title">Supports de cours</h1>
+      <p class="page-sub"><%= pluralize(@supports.size, "support") %></p>
+    </div>
+    <div class="topbar-right">
+      <%= link_to platform_admin_new_support_path, class: "btn bp" do %>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px"><path d="M8 2v12M2 8h12"/></svg>
+        Nouveau support
+      <% end %>
+    </div>
+  </div>
+
+  <% if @supports.any? %>
+    <div class="supports-grid">
+      <% @supports.each do |s| %>
+        <div class="support-card">
+          <div class="sc-head">
+            <span class="status-badge status-<%= s.statut %>"><%= s.statut %></span>
+            <div class="sc-actions">
+              <%= link_to "✏️", edit_platform_admin_support_path(s), title: "Modifier" %>
+              <%= link_to "🗑", platform_admin_support_path(s), data: { turbo_method: :delete, turbo_confirm: "Supprimer ce support ?" }, title: "Supprimer" %>
+            </div>
+          </div>
+          <h3 class="sc-title"><%= link_to s.titre, platform_admin_support_path(s) %></h3>
+          <p class="sc-desc"><%= s.description.to_s.truncate(100) %></p>
+          <div class="sc-meta">
+            <span><%= s.module_formations.count %> module(s)</span>
+            <span><%= s.inscriptions.count %> élève(s)</span>
+            <span><%= s.updated_at.strftime("%d/%m/%Y") %></span>
+          </div>
+          <div class="sc-footer">
+            <% if s.statut == "publie" %>
+              <%= button_to "Dépublier", depublier_platform_admin_support_path(s), method: :patch, class: "btn-sm btn-outline" %>
+            <% else %>
+              <%= button_to "Publier", publier_platform_admin_support_path(s), method: :patch, class: "btn-sm bp" %>
+            <% end %>
+            <%= link_to "Voir →", platform_admin_support_path(s), class: "btn-sm" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <div class="es-icon">📚</div>
+      <h3>Aucun support de cours</h3>
+      <p>Créez votre premier support et générez des modules avec l'IA.</p>
+      <%= link_to "Créer un support", platform_admin_new_support_path, class: "btn bp" %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,48 @@
+<div class="platform-page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1 class="page-title">Élèves</h1>
+      <p class="page-sub"><%= @eleves.count %> apprenant(s) inscrit(s)</p>
+    </div>
+  </div>
+
+  <% if @eleves.any? %>
+    <div class="eleves-table-wrap">
+      <table class="lms-table">
+        <thead>
+          <tr>
+            <th>Apprenant</th>
+            <th>Email</th>
+            <th>Formations</th>
+            <th>Modules terminés</th>
+            <th>Inscrit le</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @eleves.each do |eleve| %>
+            <tr>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div class="dp-avatar-sm"><%= eleve.nom_complet.first(2).upcase %></div>
+                  <%= eleve.nom_complet %>
+                </div>
+              </td>
+              <td><%= eleve.email %></td>
+              <td><%= eleve.inscriptions.count %></td>
+              <td><%= eleve.progressions.terminees.count %></td>
+              <td><%= eleve.created_at.strftime("%d/%m/%Y") %></td>
+              <td><%= link_to "Voir →", platform_admin_eleve_path(eleve), class: "btn-sm" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <div class="es-icon">🎓</div>
+      <h3>Aucun élève inscrit</h3>
+      <p>Les apprenants apparaîtront ici après leur inscription via le catalogue.</p>
+    </div>
+  <% end %>
+</div>

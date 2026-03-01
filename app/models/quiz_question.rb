@@ -1,4 +1,6 @@
 class QuizQuestion < ApplicationRecord
+  include ListAttribute
+
   belongs_to :module_formation
 
   validates :enonce, presence: true
@@ -7,9 +9,7 @@ class QuizQuestion < ApplicationRecord
 
   scope :ordonnes, -> { order(:ordre, :created_at) }
 
-  def options_list
-    Array(options)
-  end
+  list_attribute :options
 
   def bonne_option
     options_list[bonne_reponse]

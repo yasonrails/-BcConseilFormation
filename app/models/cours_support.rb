@@ -1,13 +1,23 @@
 class CoursSupport < ApplicationRecord
+  include Statutable
+  include ListAttribute
+
   belongs_to :user
   has_many :module_formations, dependent: :destroy
+  has_many :inscriptions,      dependent: :destroy
+  has_many :eleves,            through: :inscriptions, source: :user
   has_one_attached :fichier   # PDF, DOCX, TXT
 
   validates :titre, presence: true
 
-  STATUTS = %w[brouillon pret].freeze
+  STATUTS = %w[brouillon pret publie].freeze
 
-  scope :recents, -> { order(created_at: :desc) }
+  scope :recents,  -> { order(created_at: :desc) }
+  scope :publies,  -> { where(statut: "publie") }
+  scope :brouillons, -> { where(statut: "brouillon") }
+
+  def publie? = statut == "publie"
+  def nb_eleves = inscriptions.count
 
   def modules_count
     module_formations.count

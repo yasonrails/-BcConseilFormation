@@ -1,0 +1,62 @@
+<div class="platform-page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <%= link_to "← Élèves", platform_admin_eleves_path, class: "back-link" %>
+      <div class="dp-avatar-sm" style="width:36px;height:36px;font-size:14px;"><%= @eleve.nom_complet.first(2).upcase %></div>
+      <div>
+        <h1 class="page-title"><%= @eleve.nom_complet %></h1>
+        <p class="page-sub"><%= @eleve.email %> · inscrit le <%= @eleve.created_at.strftime("%d/%m/%Y") %></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="show-grid">
+    <div class="show-main">
+      <div class="content-panel">
+        <h2 class="cp-title">Formations suivies (<%= @inscriptions.count %>)</h2>
+        <% if @inscriptions.any? %>
+          <% @inscriptions.each do |insc| %>
+            <div class="dp-item">
+              <div class="dp-item-left">
+                <div class="dp-item-name"><%= link_to insc.cours_support.titre, platform_admin_support_path(insc.cours_support) %></div>
+                <div class="dp-item-meta">Inscrit le <%= insc.created_at.strftime("%d/%m/%Y") %></div>
+              </div>
+              <span class="status-badge status-<%= insc.cours_support.statut %>"><%= insc.cours_support.statut %></span>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="cp-empty">Aucune formation suivie.</p>
+        <% end %>
+      </div>
+
+      <div class="content-panel">
+        <h2 class="cp-title">Modules terminés (<%= @progressions.count %>)</h2>
+        <% if @progressions.any? %>
+          <% @progressions.each do |prog| %>
+            <div class="dp-item">
+              <div class="dp-item-left">
+                <div class="dp-item-name"><%= prog.module_formation.titre %></div>
+                <div class="dp-item-meta"><%= prog.module_formation.cours_support.titre %> · terminé le <%= prog.termine_le&.strftime("%d/%m/%Y") %></div>
+              </div>
+              <% if prog.score %>
+                <span class="score-badge <%= prog.score >= 70 ? 'score-ok' : 'score-low' %>"><%= prog.score %>%</span>
+              <% end %>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="cp-empty">Aucun module terminé.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="show-aside">
+      <div class="aside-panel">
+        <h3 class="ap-title">Résumé</h3>
+        <div class="ap-stat"><span>Formations</span><strong><%= @inscriptions.count %></strong></div>
+        <div class="ap-stat"><span>Modules terminés</span><strong><%= @progressions.count %></strong></div>
+        <% avg = @progressions.where.not(score: nil).average(:score)&.round %>
+        <% if avg %><div class="ap-stat"><span>Score moyen</span><strong><%= avg %>%</strong></div><% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<div class="platform-page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1 class="page-title">Générateur IA</h1>
+      <p class="page-sub">Générez des modules et quiz à partir de vos supports</p>
+    </div>
+    <%= link_to platform_admin_new_support_path, class: "btn bp" do %>
+      + Nouveau support
+    <% end %>
+  </div>
+
+  <% if @supports.any? %>
+    <div class="gen-grid">
+      <% @supports.each do |s| %>
+        <div class="gen-card">
+          <div class="gen-card-head">
+            <div>
+              <h3 class="gen-card-title"><%= link_to s.titre, platform_admin_support_path(s) %></h3>
+              <div class="gen-card-meta"><%= s.module_formations.count %> module(s) · <%= s.statut %></div>
+            </div>
+            <span class="status-badge status-<%= s.statut %>"></span>
+          </div>
+          <% if s.contenu_texte.blank? && !s.fichier.attached? %>
+            <div class="gen-warning">⚠️ Ajoutez du contenu texte pour pouvoir générer des modules.</div>
+          <% else %>
+            <div
+              data-controller="generateur-module"
+              data-generateur-module-modules-url-value="<%= generer_modules_platform_admin_support_path(s) %>"
+              data-generateur-module-support-id-value="<%= s.id %>">
+              <div class="gen-controls">
+                <label>Nombre de modules</label>
+                <select data-generateur-module-target="nbModules" class="form-control" style="width:80px;">
+                  <option>2</option><option selected>3</option><option>4</option><option>5</option>
+                </select>
+                <button class="btn bp btn-sm" data-action="click->generateur-module#generer">
+                  ✨ Générer modules IA
+                </button>
+              </div>
+              <div data-generateur-module-target="status" style="display:none;margin-top:8px;font-size:12px;color:rgba(255,255,255,.5);"></div>
+              <div data-generateur-module-target="results"></div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <div class="es-icon">✨</div>
+      <h3>Aucun support disponible</h3>
+      <p>Créez d'abord un support de cours pour pouvoir générer des modules.</p>
+      <%= link_to "Créer un support", platform_admin_new_support_path, class: "btn bp" %>
+    </div>
+  <% end %>
+</div>

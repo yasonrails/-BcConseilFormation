@@ -1,0 +1,11 @@
+<div class="platform-page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <%= link_to "← #{@support.titre}", platform_admin_support_path(@support), class: "back-link" %>
+      <h1 class="page-title">Modifier le support</h1>
+    </div>
+  </div>
+  <div class="form-wrap">
+    <%= render "form", support: @support %>
+  </div>
+</div>

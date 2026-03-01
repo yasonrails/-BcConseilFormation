@@ -1,0 +1,63 @@
+<div class="platform-page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1 class="page-title">Mon profil</h1>
+    </div>
+  </div>
+
+  <div class="profil-grid">
+    <div class="profil-card">
+      <div class="profil-avatar"><%= current_user.nom_complet.first(2).upcase %></div>
+      <h2 class="profil-name"><%= current_user.nom_complet %></h2>
+      <p class="profil-email"><%= current_user.email %></p>
+      <div class="profil-stats">
+        <div class="ps-stat">
+          <span class="ps-val"><%= @inscriptions.count %></span>
+          <span class="ps-lbl">Formation(s)</span>
+        </div>
+        <div class="ps-stat">
+          <span class="ps-val"><%= @total_modules %></span>
+          <span class="ps-lbl">Module(s) terminés</span>
+        </div>
+        <% if @score_moyen %>
+          <div class="ps-stat">
+            <span class="ps-val"><%= @score_moyen %>%</span>
+            <span class="ps-lbl">Score moyen</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="profil-history">
+      <div class="content-panel">
+        <h2 class="cp-title">Mes formations</h2>
+        <% @inscriptions.each do |insc| %>
+          <div class="dp-item">
+            <div class="dp-item-left">
+              <div class="dp-item-name"><%= insc.cours_support.titre %></div>
+              <div class="dp-item-meta">Inscrit le <%= insc.created_at.strftime("%d/%m/%Y") %></div>
+            </div>
+            <%= link_to "Continuer →", platform_mes_formations_path, class: "btn-sm" %>
+          </div>
+        <% end %>
+      </div>
+
+      <% if @progressions.any? %>
+        <div class="content-panel">
+          <h2 class="cp-title">Modules validés</h2>
+          <% @progressions.each do |prog| %>
+            <div class="dp-item">
+              <div class="dp-item-left">
+                <div class="dp-item-name"><%= prog.module_formation.titre %></div>
+                <div class="dp-item-meta"><%= prog.termine_le&.strftime("%d/%m/%Y") %></div>
+              </div>
+              <% if prog.score %>
+                <span class="score-badge <%= prog.score >= 70 ? 'score-ok' : 'score-low' %>"><%= prog.score %>%</span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

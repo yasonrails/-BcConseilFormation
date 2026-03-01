@@ -1,124 +1,162 @@
-<section class="ai-section" id="ia">
-  <div class="ai-grid-bg"></div>
+<%#
+  ============================================================
+  SECTION IA — Image de fond
+  Remplacez ai_bg_image par : image_url("votre-image.jpg")
+  Taille recommandée : 1920×1080px, format WebP ou JPEG.
+  ============================================================
+%>
+<% ai_bg_image = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80" %>
+
+<%#
+  ── DONNÉES DES CARDS ──────────────────────────────────────
+  Ajoutez / retirez des cards ici sans toucher au HTML.
+  Champs disponibles :
+    tag      → libellé affiché en haut de card
+    title    → titre (utiliser \n pour le saut de ligne)
+    desc     → paragraphe descriptif
+    benefits → tableau de points forts (icône ✓ auto)
+    badges   → tableau de { label:, light: } (light = gris)
+    featured → true pour la card mise en avant (fond bleu)
+    delay    → classe CSS d'animation ("d1", "d2", nil)
+  ───────────────────────────────────────────────────────────
+%>
+<% ai_cards = [
+  {
+    tag:      " Audit & Conformité",
+    title:    "Analyse intelligente\nde vos documents RH",
+    desc:     "Contrats, conventions, règlements intérieurs — vos documents sont passés en revue et les points à mettre à jour vous sont indiqués précisément, sans que vous ayez à tout relire.",
+    benefits: [
+      "Détection des points de non-conformité",
+      "Rapport de recommandations clair et actionnable",
+      "Gain de temps considérable sur vos audits"
+    ],
+    badges:   [{ label: "Disponible maintenant" }, { label: "Données hébergées en France", light: true }],
+    featured: true
+  },
+  {
+    tag:      " Analyse de CV",
+    title:    "Sélection de candidats\nplus rapide et fiable",
+    desc:     "Déposez vos CV et obtenez en quelques secondes un classement objectif des candidats selon vos critères — compétences, expérience, adéquation au poste — pour vous concentrer sur les entretiens.",
+    benefits: [
+      "Lecture et comparaison automatique des profils",
+      "Scoring personnalisé selon votre fiche de poste",
+      "Résumé structuré par candidat prêt à partager"
+    ],
+    badges:   [{ label: "Disponible maintenant" }],
+    delay:    "d1"
+  },
+  {
+    tag:      " Supports de formation",
+    title:    "Créez vos supports\nen quelques clics",
+    desc:     "Transformez vos notes, présentations ou thématiques en supports de formation complets et structurés — sans effort de mise en page, directement exploitables par vos formateurs.",
+    benefits: [
+      "Génération à partir d'un texte, d'un PDF ou d'un sujet",
+      "Structure pédagogique claire et progressive",
+      "Export prêt à l'emploi pour vos sessions"
+    ],
+    badges:   [{ label: "Disponible maintenant" }],
+    delay:    "d2"
+  },
+  {
+    tag:      " Modules interactifs",
+    title:    "Des formations qui\nengagent vraiment",
+    desc:     "À partir de vos supports existants, générez des modules interactifs avec quiz, mises en situation et points de validation — pour des apprenants qui progressent et restent motivés.",
+    benefits: [
+      "Quiz et évaluations générés automatiquement",
+      "Parcours adapté au rythme de l'apprenant",
+      "Suivi des résultats pour chaque participant"
+    ],
+    badges:   [{ label: "Disponible maintenant" }],
+    delay:    "d1"
+  },
+  {
+    tag:      " Parcours personnalisés",
+    title:    "La bonne formation\npour la bonne personne",
+    desc:     "Fini les formations génériques. Chaque collaborateur bénéficie d'un programme adapté à son poste, son niveau et ses objectifs, ajusté au fil de sa progression.",
+    benefits: [
+      "Profil de compétences établi automatiquement",
+      "Plan de développement individuel sur mesure",
+      "Recommandations mises à jour en temps réel"
+    ],
+    badges:   [{ label: "Sur devis" }],
+    delay:    "d2"
+  },
+  {
+    tag:      " Assistant RH",
+    title:    "Un assistant disponible\nà tout moment",
+    desc:     "Vos managers et équipes RH posent leurs questions et obtiennent des réponses précises accompagnées de modèles de documents prêts à l'emploi — sans attendre, sans chercher.",
+    benefits: [
+      "Réponses aux questions RH courantes et complexes",
+      "Génération de modèles de documents conformes",
+      "Disponible 24h/24, 7j/7"
+    ],
+    badges:   [{ label: "Disponible maintenant" }],
+    delay:    "d1"
+  },
+] %>
+
+<section class="ai-section" id="ia"<% if ai_bg_image.present? %> style="--ai-bg: url('<%= ai_bg_image %>');"<% end %>>
+  <div class="ai-bg-overlay"></div>
   <div class="ai-inner">
 
     <div class="ai-header">
-      <p class="s-label reveal" style="color:rgba(255,255,255,.4);">05 — Intelligence Artificielle</p>
-      <h2 class="s-title reveal" style="color:#fff;">La RH augmentée<br>par <em style="color:rgba(255,255,255,.45)">l'IA.</em></h2>
-      <p class="s-desc reveal" style="color:rgba(255,255,255,.5);max-width:560px;margin-top:16px;">Nous intégrons des solutions LLM de pointe dans nos accompagnements pour accélérer votre transformation RH — analyse, génération, aide à la décision.</p>
+      <p class="s-label reveal" style="color:rgba(255,255,255,.45);">05 — Nos solutions IA</p>
+      <h2 class="s-title reveal" style="color:#fff;">Une RH plus intelligente,<br><em style="color:rgba(255,255,255,.4)">dès aujourd'hui.</em></h2>
+      <p class="s-desc reveal" style="color:rgba(255,255,255,.55);max-width:580px;margin-top:16px;">Des outils concrets, immédiatement opérationnels, conçus pour votre réalité terrain — sans complexité technique, avec un accompagnement humain à chaque étape.</p>
     </div>
 
     <div class="ai-cards">
-
-      <%# Card 1 — Featured %>
-      <div class="ai-card ai-card--featured reveal">
-        <div class="ai-card-glow"></div>
-        <div class="ai-card-tag">Analyse documentaire</div>
-        <h3 class="ai-card-title">Audit RH<br>assisté par IA</h3>
-        <p class="ai-card-desc">Nos modèles LLM analysent vos conventions collectives, contrats et règlements intérieurs pour détecter automatiquement les non-conformités et opportunités d'optimisation.</p>
-        <div class="ai-demo">
-          <div class="ai-demo-label">Exemple de sortie LLM</div>
-          <div class="ai-terminal">
-            <div class="ai-terminal-line"><span class="ai-prompt">▸</span> Analyse contrat CDD en cours…</div>
-            <div class="ai-terminal-line ai-typing"><span class="ai-prompt ai-green">✓</span> 3 clauses non-conformes détectées</div>
-            <div class="ai-terminal-line"><span class="ai-prompt ai-amber">⚠</span> Clause 7.2 — Période d'essai excessive</div>
-            <div class="ai-terminal-line"><span class="ai-prompt ai-amber">⚠</span> Clause 12 — Mentions RGPD manquantes</div>
-            <div class="ai-terminal-line"><span class="ai-prompt">→</span> Recommandation générée — <em>voir rapport</em></div>
+      <% ai_cards.each_with_index do |card, i| %>
+        <div class="ai-card<%= " ai-card--featured" if card[:featured] %> reveal<%= " #{card[:delay]}" if card[:delay] %>">
+          <% if card[:featured] %><div class="ai-card-glow"></div><% end %>
+          <div class="ai-card-tag"><%= card[:tag] %></div>
+          <h3 class="ai-card-title"><%= card[:title].gsub("\n", "<br>").html_safe %></h3>
+          <p class="ai-card-desc"><%= card[:desc] %></p>
+          <div class="ai-benefits">
+            <% card[:benefits].each do |benefit| %>
+              <div class="ai-benefit-item">
+                <span class="ai-benefit-icon">✓</span>
+                <span><%= benefit %></span>
+              </div>
+            <% end %>
+          </div>
+          <div class="ai-badge-row">
+            <% card[:badges].each do |badge| %>
+              <span class="ai-badge<%= " ai-badge--light" if badge[:light] %>"><%= badge[:label] %></span>
+            <% end %>
           </div>
         </div>
-        <div class="ai-stack">
-          <span class="ai-tech">GPT-4o</span>
-          <span class="ai-tech">Claude 3.5</span>
-          <span class="ai-tech">RAG juridique</span>
-        </div>
-      </div>
-
-      <%# Card 2 %>
-      <div class="ai-card reveal d1">
-        <div class="ai-card-tag">Formation adaptative</div>
-        <h3 class="ai-card-title">Parcours<br>personnalisés</h3>
-        <p class="ai-card-desc">Un LLM analyse le profil, les lacunes et le rythme de chaque apprenant pour générer un plan de formation sur mesure, ajusté en temps réel.</p>
-        <div class="ai-visual">
-          <div class="ai-path-node active">Profil évalué</div>
-          <div class="ai-path-arrow">→</div>
-          <div class="ai-path-node">Lacunes identifiées</div>
-          <div class="ai-path-arrow">→</div>
-          <div class="ai-path-node">Parcours généré</div>
-        </div>
-        <div class="ai-stack">
-          <span class="ai-tech">Fine-tuning</span>
-          <span class="ai-tech">Embeddings</span>
-        </div>
-      </div>
-
-      <%# Card 3 %>
-      <div class="ai-card reveal d2">
-        <div class="ai-card-tag">Aide à la décision</div>
-        <h3 class="ai-card-title">Assistant RH<br>conversationnel</h3>
-        <p class="ai-card-desc">Un agent IA disponible 24/7 qui répond aux questions RH complexes, génère des modèles de documents et guide les managers en temps réel.</p>
-        <div class="ai-chat-demo">
-          <div class="ai-chat-bubble user">Comment rédiger un PIP conforme ?</div>
-          <div class="ai-chat-bubble bot">Je génère un modèle de Plan d'Amélioration des Performances adapté à votre convention collective, incluant les 6 éléments obligatoires…</div>
-        </div>
-        <div class="ai-stack">
-          <span class="ai-tech">Agents IA</span>
-          <span class="ai-tech">Tools API</span>
-        </div>
-      </div>
-
-      <%# Card 4 %>
-      <div class="ai-card reveal d1">
-        <div class="ai-card-tag">Veille &amp; Conformité</div>
-        <h3 class="ai-card-title">Veille juridique<br>automatisée</h3>
-        <p class="ai-card-desc">Surveillance continue des évolutions du droit du travail. Notre pipeline LLM extrait, synthétise et alerte sur les changements réglementaires qui impactent votre organisation.</p>
-        <div class="ai-counter">
-          <div class="ai-counter-item">
-            <span class="ai-counter-val">12k+</span>
-            <span class="ai-counter-lbl">textes analysés/mois</span>
-          </div>
-          <div class="ai-counter-sep"></div>
-          <div class="ai-counter-item">
-            <span class="ai-counter-val">&lt;2h</span>
-            <span class="ai-counter-lbl">délai d'alerte</span>
-          </div>
-        </div>
-        <div class="ai-stack">
-          <span class="ai-tech">Web scraping</span>
-          <span class="ai-tech">NLP</span>
-          <span class="ai-tech">Résumé auto</span>
-        </div>
-      </div>
-
-      <%# Card 5 — Full width stack %>
-      <div class="ai-card ai-card--wide reveal d2">
-        <div class="ai-card-glow ai-card-glow--wide"></div>
-        <div class="ai-card-wide-inner">
-          <div>
-            <div class="ai-card-tag">Notre stack technologique</div>
-            <h3 class="ai-card-title">Intégré à votre<br>environnement existant.</h3>
-            <p class="ai-card-desc">Nos solutions s'intègrent à vos SIRH, outils collaboratifs et bases documentaires — sans friction, sans rupture de données.</p>
-          </div>
-          <div class="ai-integrations">
-            <div class="ai-int-row">
-              <div class="ai-int-chip"><span>🤖</span> OpenAI GPT-4o</div>
-              <div class="ai-int-chip"><span>🧠</span> Anthropic Claude</div>
-            </div>
-            <div class="ai-int-row">
-              <div class="ai-int-chip"><span>🔗</span> LangChain RAG</div>
-              <div class="ai-int-chip"><span>📊</span> Vector DB</div>
-            </div>
-            <div class="ai-int-row">
-              <div class="ai-int-chip"><span>🔒</span> Données privées</div>
-              <div class="ai-int-chip"><span>⚡</span> API REST</div>
-            </div>
-            <div class="ai-sovereignty">
-              <span class="ai-sov-dot"></span>
-              Souveraineté des données garantie — hébergement France
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <% end %>
     </div>
+
+    <div class="ai-cta-strip reveal">
+      <div class="ai-cta-strip-inner">
+        <div>
+          <p class="ai-cta-strip-title">Prêt à moderniser votre RH ?</p>
+          <p class="ai-cta-strip-sub">Discutons de vos besoins et identifions les solutions les plus adaptées à votre organisation.</p>
+        </div>
+        <%= link_to "#contact", class: "btn ai-cta-btn" do %>
+          Prendre contact <span>→</span>
+        <% end %>
+      </div>
+      <div class="ai-cta-guarantees">
+        <span> Confidentialité garantie</span>
+        <span>🇫🇷 Hébergement France</span>
+        <span> Sans engagement initial</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="ai-section" id="ia"
+  <% if ai_bg_image.present? %>
+    style="--ai-bg: url('<%= ai_bg_image %>');"
+  <% end %>>
+
+  <div class="ai-bg-overlay"></div>
+  <div class="ai-inner">
+    
   </div>
 </section>

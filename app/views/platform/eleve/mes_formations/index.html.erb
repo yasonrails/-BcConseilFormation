@@ -1,0 +1,64 @@
+<div class="platform-page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <h1 class="page-title">Mes formations</h1>
+      <p class="page-sub"><%= @inscriptions.count %> formation(s) en cours</p>
+    </div>
+    <%= link_to "Voir le catalogue →", platform_catalogue_path, class: "btn" %>
+  </div>
+
+  <% if @inscriptions.any? %>
+    <div class="mes-formations-list">
+      <% @inscriptions.each do |insc| %>
+        <% formation = insc.cours_support %>
+        <% modules = formation.module_formations.publies.order(:ordre) %>
+        <% nb_termines = current_user.progressions.where(module_formation: modules, termine: true).count %>
+        <% pct = modules.count > 0 ? (nb_termines * 100 / modules.count) : 0 %>
+
+        <div class="mf-card">
+          <div class="mf-head">
+            <div>
+              <h3 class="mf-title"><%= formation.titre %></h3>
+              <p class="mf-meta">Inscrit le <%= insc.created_at.strftime("%d/%m/%Y") %> · <%= modules.count %> module(s)</p>
+            </div>
+            <div class="mf-progress-info">
+              <span class="mf-pct"><%= pct %>%</span>
+              <span class="mf-pct-lbl">complété</span>
+            </div>
+          </div>
+
+          <div class="progress-bar-wrap">
+            <div class="progress-bar" style="width:<%= pct %>%;"></div>
+          </div>
+
+          <div class="mf-modules">
+            <% modules.each_with_index do |mod, i| %>
+              <% prog = current_user.progressions.find_by(module_formation: mod) %>
+              <div class="mf-module-item">
+                <div class="mm-status <%= prog&.termine? ? 'mm-done' : 'mm-todo' %>">
+                  <%= prog&.termine? ? "✓" : (i + 1) %>
+                </div>
+                <div class="mm-body">
+                  <div class="mm-title"><%= link_to mod.titre, platform_module_path(mod) %></div>
+                  <% if mod.duree_estimee.present? %>
+                    <div class="mm-meta">⏱ <%= mod.duree_estimee %></div>
+                  <% end %>
+                </div>
+                <% if prog&.score %>
+                  <span class="score-badge <%= prog.score >= 70 ? 'score-ok' : 'score-low' %>"><%= prog.score %>%</span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <div class="es-icon">🎓</div>
+      <h3>Aucune formation en cours</h3>
+      <p>Inscrivez-vous à une formation depuis le catalogue.</p>
+      <%= link_to "Parcourir le catalogue", platform_catalogue_path, class: "btn bp" %>
+    </div>
+  <% end %>
+</div>

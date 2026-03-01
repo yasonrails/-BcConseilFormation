@@ -1,30 +1,97 @@
-<section class="services" id="formation">
+<section class="services" id="conseil">
   <div class="section-hd">
     <div>
       <p class="s-label reveal">01 — Expertises</p>
       <h2 class="s-title reveal">Nos domaines<br><em>d'intervention.</em></h2>
     </div>
-    <p class="s-desc reveal">Trois axes complémentaires pour transformer durablement la performance de vos équipes et la structuration de votre organisation.</p>
+    <p class="s-desc reveal">Des expertises complémentaires pour transformer durablement la performance de vos équipes et la structuration de votre organisation.</p>
   </div>
 
-  <div class="svc-list">
-    <div class="svc-item reveal svc-rose" id="conseil">
-      <span class="svc-num svc-num-rose">01</span>
-      <h3 class="svc-name">Formation en <em>Ressources Humaines</em> &amp; Droit</h3>
-      <p class="svc-desc">Recrutement, gestion des talents, développement des compétences, droit du travail — des programmes adaptés à votre secteur et vos enjeux.</p>
-      <span class="svc-tag">Formation</span>
-    </div>
-    <div class="svc-item reveal svc-plum">
-      <span class="svc-num svc-num-plum">02</span>
-      <h3 class="svc-name">Conseil en RH, <em>Organisation</em> &amp; Stratégie</h3>
-      <p class="svc-desc">Identification de vos défis, développement de stratégies personnalisées — un accompagnement expert qui aligne vos ressources avec vos objectifs.</p>
-      <span class="svc-tag">Conseil</span>
-    </div>
-    <div class="svc-item reveal svc-teal">
-      <span class="svc-num svc-num-teal">03</span>
-      <h3 class="svc-name">Audit RH &amp; <em>Organisation</em> du travail</h3>
-      <p class="svc-desc">Diagnostic rigoureux de vos pratiques, conformité réglementaire, identification des leviers d'amélioration — pour une organisation durable.</p>
-      <span class="svc-tag">Audit</span>
-    </div>
+  <%
+    expertise_items = [
+      {
+        num:   "01",
+        img:   "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=900&q=80",
+        alt:   "Deux professionnels en consultation, l'un prenant des notes",
+        tag:   "Ressources Humaines",
+        title: "Conseil en Ressources Humaines",
+        desc:  "Chez BC CONSEIL nous comprenons que le capital humain est l'une des ressources les plus précieuses de votre entreprise. Notre service de conseil en ressources humaines est conçu pour vous aider à maximiser le potentiel de vos collaborateurs tout en optimisant vos processus RH.",
+        extra: "Nous offrons des solutions sur mesure qui répondent aux défis spécifiques de votre organisation — gestion des talents, développement des compétences, gestion du changement. Nos experts vous accompagnent dans l'élaboration et la mise en œuvre de stratégies RH efficaces.",
+        items: ["Gestion des talents & compétences", "Développement des compétences", "Gestion du changement", "Stratégies RH sur mesure"]
+      },
+      {
+        num:   "02",
+        img:   "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&q=80",
+        alt:   "Analyse de graphiques financiers et tableaux de bord",
+        tag:   "Stratégie",
+        title: "Conseil en Stratégie d'Entreprise",
+        desc:  "La réussite de votre entreprise repose sur une stratégie solide et bien définie. Notre équipe vous accompagne dans la création, la révision ou l'optimisation de votre stratégie d'entreprise pour assurer une croissance durable et une compétitivité accrue sur le marché.",
+        extra: "Nous analysons en profondeur votre environnement, vos ressources internes et les tendances du marché pour vous fournir une feuille de route claire et pragmatique — que vous cherchiez à pénétrer de nouveaux marchés, diversifier vos activités ou restructurer vos opérations.",
+        items: ["Analyse stratégique & diagnostic", "Feuille de route personnalisée", "Développement de nouveaux marchés", "Restructuration & optimisation"]
+      },
+      {
+        num:   "03",
+        img:   "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=900&q=80",
+        alt:   "Main signant un document juridique avec un stylo plume",
+        tag:   "Droit",
+        title: "Conseil en Droit des Contrats",
+        desc:  "Les contrats sont au cœur des relations commerciales et constituent des outils essentiels pour sécuriser vos transactions et vos partenariats. Notre service vous aide à naviguer dans la complexité juridique pour rédiger, négocier et gérer vos contrats de manière efficace.",
+        extra: "Nous veillons à ce que vos intérêts soient protégés, tout en assurant la conformité aux régulations en vigueur — contrats de travail, partenariats stratégiques, sous-traitance ou contrats commerciaux.",
+        items: ["Rédaction & négociation de contrats", "Contrats de travail & droit social", "Partenariats & sous-traitance", "Conformité réglementaire"]
+      },
+      {
+        num:   "04",
+        img:   "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=80",
+        alt:   "Réunion de startup avec tableau blanc et brainstorming",
+        tag:   "Gestion",
+        title: "Conseil en Gestion d'Entreprises",
+        desc:  "La gestion d'entreprise requiert une approche globale et intégrée pour assurer l'efficacité opérationnelle et la croissance durable. Chez BC CONSEIL nous vous accompagnons dans l'optimisation de vos processus de gestion, en vous aidant à structurer et piloter vos activités de manière cohérente.",
+        extra: "Nous intervenons sur des aspects clés tels que la gestion financière, la gestion des opérations, la gestion des risques et des ressources humaines, en vous fournissant des outils et méthodes éprouvées pour améliorer la performance de votre entreprise.",
+        items: ["Gestion financière & contrôle", "Optimisation des opérations", "Gestion des risques", "Pilotage de la performance"]
+      },
+      {
+        num:   "05",
+        img:   "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=900&q=80",
+        alt:   "Équipe en coopération et brainstorming autour d'un tableau",
+        tag:   "Organisation",
+        title: "Conseil en Organisation",
+        desc:  "L'organisation interne de votre entreprise est un facteur clé de succès, influençant directement votre efficacité opérationnelle et votre capacité à atteindre vos objectifs stratégiques. Chez BC CONSEIL, nous optimisons la structure de votre entreprise et rationalisons vos processus.",
+        extra: "Nous vous aidons à identifier les points de blocage, simplifier vos flux de travail et mettre en place des pratiques organisationnelles qui favorisent l'agilité et l'innovation — pour mieux répondre aux défis actuels et vous préparer aux opportunités futures.",
+        items: ["Diagnostic organisationnel", "Simplification des flux de travail", "Agilité & innovation", "Modèles organisationnels sur mesure"]
+      },
+      {
+        num:   "06",
+        img:   "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&q=80",
+        alt:   "Travail d'équipe et coopération collaborative",
+        tag:   "Accompagnement",
+        title: "Accompagnement Personnalisé",
+        desc:  "Chez BC CONSEIL, nous croyons que chaque entreprise est unique, et c'est pourquoi nous adoptons une approche personnalisée dans toutes nos prestations de conseil. Nous travaillons en étroite collaboration avec vous pour comprendre vos défis spécifiques.",
+        extra: "Notre accompagnement va au-delà du simple conseil : nous vous aidons à mettre en œuvre les changements nécessaires et à suivre les résultats pour garantir la réussite de vos projets. Faites confiance à notre expertise pour transformer vos idées en actions concrètes.",
+        items: ["Approche sur mesure", "Mise en œuvre & suivi", "Transformation concrète", "Croissance & pérennité"]
+      }
+    ]
+  %>
+
+  <div class="expertise-list">
+    <% expertise_items.each_with_index do |item, i| %>
+      <div class="expertise-row <%= i.even? ? '' : 'expertise-row--reverse' %> reveal">
+        <div class="er-visual">
+          <img src="<%= item[:img] %>" alt="<%= item[:alt] %>" loading="lazy">
+          <div class="er-overlay"></div>
+          <span class="er-num"><%= item[:num] %></span>
+        </div>
+        <div class="er-content">
+          <span class="er-tag"><%= item[:tag] %></span>
+          <h3 class="er-title"><%= item[:title] %></h3>
+          <p class="er-desc"><%= item[:desc] %></p>
+          <p class="er-desc"><%= item[:extra] %></p>
+          <ul class="er-list">
+            <% item[:items].each do |point| %>
+              <li><%= point %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% end %>
   </div>
 </section>

@@ -1,0 +1,15 @@
+<%#
+  Reusable AI loading indicator + results/error state blocks.
+  Used in the generateur panel and module quiz panels.
+
+  Locals:
+    controller_target  (String) — Stimulus controller prefix (e.g. "generateur" or "generateur-module")
+    loading_text       (String) — initial loading text (default: "Génération en cours…")
+%>
+<% ctrl     = local_assigns.fetch(:controller_target, "generateur") %>
+<% init_txt = local_assigns.fetch(:loading_text, "Génération en cours…") %>
+
+<div class="gen-loading" data-<%= ctrl %>-target="loading" style="display:none">
+  <div class="gen-loading-bar"><div class="gen-loading-fill"></div></div>
+  <p class="gen-loading-text" data-<%= ctrl %>-target="loadingText"><%= init_txt %></p>
+</div>

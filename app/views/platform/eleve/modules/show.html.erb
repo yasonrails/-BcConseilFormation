@@ -1,0 +1,108 @@
+<div class="platform-page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <%= link_to "← #{@support.titre}", platform_mes_formations_path, class: "back-link" %>
+      <h1 class="page-title"><%= @module.titre %></h1>
+      <% if @module.duree_estimee.present? %>
+        <span class="duree-badge">⏱ <%= @module.duree_estimee %></span>
+      <% end %>
+    </div>
+    <% if @progression.termine? %>
+      <div class="completion-badge">✓ Module terminé<% if @progression.score %> · <%= @progression.score %>%<% end %></div>
+    <% end %>
+  </div>
+
+  <div class="module-eleve-grid">
+    <%# ── Contenu pédagogique ── %>
+    <div class="module-main">
+      <% if @module.objectifs_list.any? %>
+        <div class="objectifs-block">
+          <h4>🎯 Ce que vous allez apprendre</h4>
+          <ul>
+            <% @module.objectifs_list.each do |obj| %>
+              <li><%= obj %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="module-content">
+        <%= @module.contenu.present? ? @module.contenu.html_safe : "<p><em>Contenu non disponible.</em></p>".html_safe %>
+      </div>
+
+      <%# ── Quiz interactif ── %>
+      <% if @quiz.any? %>
+        <div class="quiz-section"
+          data-controller="quiz-player"
+          data-quiz-player-progression-url-value="<%= platform_module_progression_path(@module) %>">
+
+          <div class="quiz-header">
+            <h2 class="quiz-title">📝 Quiz de validation</h2>
+            <p class="quiz-sub"><%= @quiz.count %> question(s) — Score minimum requis : 70%</p>
+          </div>
+
+          <div class="quiz-questions" data-quiz-player-target="questions">
+            <% @quiz.each_with_index do |q, i| %>
+              <div class="quiz-q" data-index="<%= i %>" data-correct="<%= q.bonne_reponse %>" style="<%= i > 0 ? 'display:none;' : '' %>">
+                <div class="quiz-q-num">Question <%= i + 1 %> / <%= @quiz.count %></div>
+                <p class="quiz-q-enonce"><%= q.enonce %></p>
+                <div class="quiz-options">
+                  <% q.options_list.each_with_index do |opt, j| %>
+                    <button class="quiz-opt" data-action="click->quiz-player#select" data-value="<%= j %>">
+                      <span class="quiz-opt-letter"><%= ("A".ord + j).chr %></span>
+                      <span><%= opt %></span>
+                    </button>
+                  <% end %>
+                </div>
+                <% if q.explication.present? %>
+                  <div class="quiz-explication" style="display:none;" data-quiz-player-target="explication">
+                    💡 <em><%= q.explication %></em>
+                  </div>
+                <% end %>
+                <div class="quiz-q-actions" style="display:none;" data-quiz-player-target="nextBtn">
+                  <% if i < @quiz.count - 1 %>
+                    <button class="btn bp btn-sm" data-action="click->quiz-player#next">Question suivante →</button>
+                  <% else %>
+                    <button class="btn bp" data-action="click->quiz-player#finish">Terminer et voir mon score →</button>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+
+          <div data-quiz-player-target="result" style="display:none;" class="quiz-result">
+            <div class="qr-score" data-quiz-player-target="scoreDisplay"></div>
+            <div class="qr-message" data-quiz-player-target="message"></div>
+            <div class="qr-actions">
+              <button class="btn" data-action="click->quiz-player#restart">Relancer le quiz</button>
+              <%= link_to "Retour à mes formations →", platform_mes_formations_path, class: "btn bp" %>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <div class="quiz-unavailable">
+          <p>Aucun quiz disponible pour ce module.</p>
+          <%= link_to "Retour à mes formations", platform_mes_formations_path, class: "btn bp" %>
+        </div>
+      <% end %>
+    </div>
+
+    <%# ── Navigation modules ── %>
+    <div class="module-nav">
+      <h4 class="mn-title">Modules de la formation</h4>
+      <% @autres_modules.each_with_index do |m, i| %>
+        <% prog = current_user.progressions.find_by(module_formation: m) %>
+        <div class="mn-item <%= m.id == @module.id ? 'mn-item--active' : '' %>">
+          <div class="mm-status <%= prog&.termine? ? 'mm-done' : 'mm-todo' %>">
+            <%= prog&.termine? ? "✓" : (i + 1) %>
+          </div>
+          <% if m.id == @module.id %>
+            <span class="mn-label"><%= m.titre %></span>
+          <% else %>
+            <%= link_to m.titre, platform_module_path(m), class: "mn-label" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

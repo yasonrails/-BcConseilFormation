@@ -1,0 +1,11 @@
+<div class="platform-page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <%= link_to "← Supports", platform_admin_supports_path, class: "back-link" %>
+      <h1 class="page-title">Nouveau support de cours</h1>
+    </div>
+  </div>
+  <div class="form-wrap">
+    <%= render "form", support: @support %>
+  </div>
+</div>

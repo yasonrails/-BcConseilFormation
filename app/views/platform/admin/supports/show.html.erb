@@ -1,0 +1,105 @@
+<div class="platform-page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <%= link_to "← Supports", platform_admin_supports_path, class: "back-link" %>
+      <h1 class="page-title"><%= @support.titre %></h1>
+      <span class="status-badge status-<%= @support.statut %>"><%= @support.statut %></span>
+    </div>
+    <div class="topbar-right">
+      <% if @support.statut == "publie" %>
+        <%= button_to "Dépublier", depublier_platform_admin_support_path(@support), method: :patch, class: "btn btn-outline" %>
+      <% else %>
+        <%= button_to "Publier", publier_platform_admin_support_path(@support), method: :patch, class: "btn bp" %>
+      <% end %>
+      <%= link_to "Modifier", edit_platform_admin_support_path(@support), class: "btn" %>
+    </div>
+  </div>
+
+  <div class="show-grid">
+    <div class="show-main">
+      <%# ── Infos support ── %>
+      <div class="content-panel">
+        <h2 class="cp-title">Contenu du support</h2>
+        <% if @support.description.present? %>
+          <p class="cp-desc"><%= @support.description %></p>
+        <% end %>
+        <% if @support.contenu_texte.present? %>
+          <div class="cp-text"><%= simple_format @support.contenu_texte.truncate(800) %></div>
+        <% elsif @support.fichier.attached? %>
+          <p class="cp-meta">📎 Fichier : <%= @support.fichier.filename %></p>
+        <% else %>
+          <p class="cp-empty">Aucun contenu renseigné.</p>
+        <% end %>
+      </div>
+
+      <%# ── Modules ── %>
+      <div class="content-panel">
+        <div class="cp-header">
+          <h2 class="cp-title">Modules (<%= @modules.count %>)</h2>
+          <div
+            data-controller="generateur-module"
+            data-generateur-module-modules-url-value="<%= generer_modules_platform_admin_support_path(@support) %>"
+            data-generateur-module-support-id-value="<%= @support.id %>">
+            <button class="btn bp btn-sm" data-action="click->generateur-module#generer">
+              ✨ Générer avec l'IA
+            </button>
+            <div data-generateur-module-target="status" style="display:none;margin-top:8px;font-size:12px;color:rgba(255,255,255,.5);"></div>
+          </div>
+        </div>
+        <% if @modules.any? %>
+          <div class="modules-list">
+            <% @modules.each_with_index do |mod, i| %>
+              <div class="module-item">
+                <div class="mi-num"><%= i + 1 %></div>
+                <div class="mi-body">
+                  <div class="mi-title"><%= link_to mod.titre, platform_admin_support_module_path(@support, mod) %></div>
+                  <div class="mi-meta">
+                    <span><%= mod.quiz_questions.count %> question(s)</span>
+                    <% if mod.duree_estimee.present? %><span>⏱ <%= mod.duree_estimee %></span><% end %>
+                  </div>
+                </div>
+                <span class="status-badge status-<%= mod.statut %>"><%= mod.statut %></span>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="cp-empty">Aucun module. Générez-en avec l'IA ci-dessus.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="show-aside">
+      <%# ── Stats ── %>
+      <div class="aside-panel">
+        <h3 class="ap-title">Statistiques</h3>
+        <div class="ap-stat"><span>Élèves inscrits</span><strong><%= @inscriptions.count %></strong></div>
+        <div class="ap-stat"><span>Modules publiés</span><strong><%= @modules.select(&:publie?).count %> / <%= @modules.count %></strong></div>
+        <div class="ap-stat"><span>Créé le</span><strong><%= @support.created_at.strftime("%d/%m/%Y") %></strong></div>
+        <div class="ap-stat"><span>Mis à jour</span><strong><%= @support.updated_at.strftime("%d/%m/%Y") %></strong></div>
+      </div>
+
+      <%# ── Élèves inscrits ── %>
+      <div class="aside-panel">
+        <h3 class="ap-title">Élèves inscrits (<%= @inscriptions.count %>)</h3>
+        <% if @inscriptions.any? %>
+          <div class="ap-eleve-list">
+            <% @inscriptions.first(8).each do |insc| %>
+              <div class="ap-eleve">
+                <div class="dp-avatar-sm"><%= insc.user.nom_complet.first(2).upcase %></div>
+                <div>
+                  <div class="ap-eleve-name"><%= link_to insc.user.nom_complet, platform_admin_eleve_path(insc.user) %></div>
+                  <div class="ap-eleve-date"><%= insc.created_at.strftime("%d/%m/%Y") %></div>
+                </div>
+              </div>
+            <% end %>
+            <% if @inscriptions.count > 8 %>
+              <p class="ap-more">+<%= @inscriptions.count - 8 %> autres</p>
+            <% end %>
+          </div>
+        <% else %>
+          <p class="cp-empty">Aucun élève inscrit.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

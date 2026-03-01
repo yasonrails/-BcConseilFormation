@@ -1,0 +1,32 @@
+<div class="platform-page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <%= link_to "← #{@module.titre}", platform_admin_support_module_path(@support, @module), class: "back-link" %>
+      <h1 class="page-title">Modifier le module</h1>
+    </div>
+  </div>
+  <div class="form-wrap">
+    <%= form_with model: [:platform, :admin, @support, @module], class: "lms-form" do |f| %>
+      <div class="form-group">
+        <%= f.label :titre, "Titre du module" %>
+        <%= f.text_field :titre, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :duree_estimee, "Durée estimée" %>
+        <%= f.text_field :duree_estimee, placeholder: "Ex : 45 minutes", class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :ordre, "Ordre d'affichage" %>
+        <%= f.number_field :ordre, class: "form-control", min: 0 %>
+      </div>
+      <div class="form-group">
+        <%= f.label :contenu, "Contenu pédagogique" %>
+        <%= f.text_area :contenu, rows: 15, class: "form-control" %>
+      </div>
+      <div class="form-actions">
+        <%= f.submit "Mettre à jour", class: "btn bp" %>
+        <%= link_to "Annuler", platform_admin_support_module_path(@support, @module), class: "btn" %>
+      </div>
+    <% end %>
+  </div>
+</div>
