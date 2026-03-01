@@ -1,0 +1,105 @@
+<%# app/views/platform/generateur/index.html.erb %>
+<% content_for :title, "Générateur IA" %>
+
+<div class="topbar">
+  <h1 class="topbar-title">Générateur <em>de formations IA</em></h1>
+  <%= link_to platform_new_support_path, class: "btn bp" do %>
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+    Nouveau support
+  <% end %>
+</div>
+
+<div class="vp">
+
+  <%# Hero bloc %>
+  <div class="gen-hero card">
+    <div class="gen-hero-inner cp">
+      <div class="gen-hero-text">
+        <span class="gen-hero-badge">⚡ Propulsé par GPT-4o</span>
+        <h2 class="gen-hero-title">Transformez vos supports en formations complètes</h2>
+        <p class="gen-hero-sub">Uploadez un PDF, DOCX ou collez votre contenu — l'IA génère automatiquement des modules structurés, des objectifs pédagogiques et des quiz d'évaluation.</p>
+        <div class="gen-steps">
+          <div class="gen-step">
+            <div class="gen-step-num">1</div>
+            <div>
+              <strong>Créer un support</strong>
+              <p>Uploadez votre document ou saisissez le contenu</p>
+            </div>
+          </div>
+          <div class="gen-step-arrow">→</div>
+          <div class="gen-step">
+            <div class="gen-step-num">2</div>
+            <div>
+              <strong>Générer les modules</strong>
+              <p>L'IA découpe et structure en modules pédagogiques</p>
+            </div>
+          </div>
+          <div class="gen-step-arrow">→</div>
+          <div class="gen-step">
+            <div class="gen-step-num">3</div>
+            <div>
+              <strong>Publier la formation</strong>
+              <p>Quizz intégrés, objectifs définis, prêt à diffuser</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%# Supports existants prêts à générer %>
+  <div class="gen-section-title" style="margin-top:32px">
+    <h2>Supports prêts à générer</h2>
+  </div>
+
+  <% prets = @supports.select(&:pret?) %>
+  <% if prets.empty? %>
+    <div class="gen-empty">
+      <div class="gen-empty-icon">📂</div>
+      <h3>Aucun support avec du contenu</h3>
+      <p>Créez un support et ajoutez-y du contenu pour pouvoir lancer la génération IA.</p>
+      <%= link_to "Créer un support", platform_new_support_path, class: "btn bp" %>
+    </div>
+  <% else %>
+    <div class="supports-grid">
+      <% prets.each do |support| %>
+        <div class="support-card support-card--ready">
+          <div class="sc-ready-badge">✓ Prêt</div>
+          <h3 class="sc-title"><%= support.titre %></h3>
+          <p class="sc-desc">
+            <%= truncate(support.contenu_texte.to_s.gsub(/\s+/, " "), length: 120) %>
+          </p>
+          <div class="sc-stats">
+            <span class="sc-stat"><strong><%= support.modules_count %></strong> module<%= "s" if support.modules_count != 1 %></span>
+          </div>
+          <%= link_to platform_support_path(support), class: "btn-gen-ia" do %>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+            Générer des modules
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%# Tous les supports %>
+  <% autres = @supports.reject(&:pret?) %>
+  <% if autres.any? %>
+    <div class="gen-section-title" style="margin-top:32px">
+      <h2>Brouillons <span class="gen-count"><%= autres.count %></span></h2>
+    </div>
+    <div class="supports-grid">
+      <% autres.each do |support| %>
+        <div class="support-card">
+          <h3 class="sc-title"><%= support.titre %></h3>
+          <p class="sc-desc"><%= support.description.presence || "Aucun contenu encore" %></p>
+          <%= link_to platform_edit_support_path(support), class: "btn bo bs" do %>
+            Ajouter du contenu
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+</div>

@@ -1,0 +1,94 @@
+<% content_for :page_title do %>Mon profil<% end %>
+
+<!-- En-tête profil -->
+<div class="card" style="padding:28px;margin-bottom:20px;">
+  <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+    <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--ink),#1a1a2e);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:300;color:#fff;letter-spacing:-.01em;flex-shrink:0;">
+      <%= @user_initiales %>
+    </div>
+    <div style="flex:1;">
+      <div style="font-family:var(--serif);font-size:24px;font-weight:300;margin-bottom:3px;"><%= @user_name %></div>
+      <div style="font-size:12px;color:var(--ink-60);margin-bottom:12px;"><%= @user_role %> · <%= current_user.email %></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span style="font-size:11px;background:var(--sand);padding:4px 12px;border-radius:10px;border:1px solid var(--border);">🏅 <%= @certificats.count %> certificats</span>
+        <span style="font-size:11px;background:var(--sand);padding:4px 12px;border-radius:10px;border:1px solid var(--border);">📚 3 formations en cours</span>
+        <span style="font-size:11px;background:var(--sand);padding:4px 12px;border-radius:10px;border:1px solid var(--border);">⏱ 48h de formation</span>
+      </div>
+    </div>
+    <button class="btn bo" style="font-size:12px;align-self:flex-start;">Modifier le profil</button>
+  </div>
+</div>
+
+<div class="g2" style="align-items:start;">
+  <!-- Certificats -->
+  <div>
+    <div class="lbl" style="margin-bottom:10px;">Mes certifications</div>
+    <% @certificats.each do |cert| %>
+      <div class="card" style="padding:16px 18px;margin-bottom:10px;">
+        <div style="display:flex;align-items:start;gap:14px;">
+          <div style="width:42px;height:42px;border-radius:var(--r8);background:<%= cert[:statut] == :obtenu ? 'linear-gradient(135deg,var(--ink),#1a1a2e)' : 'var(--sand)' %>;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">
+            <%= cert[:statut] == :obtenu ? '🏅' : '⏳' %>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:600;margin-bottom:2px;"><%= cert[:titre] %></div>
+            <div style="font-size:11px;color:var(--ink-60);margin-bottom:8px;"><%= cert[:emetteur] %></div>
+            <% if cert[:statut] == :obtenu %>
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:10px;background:rgba(15,146,84,.1);color:var(--green);padding:3px 10px;border-radius:10px;font-weight:600;">Obtenu le <%= cert[:date] %></span>
+                <button class="btn bo" style="font-size:10px;padding:4px 10px;">📥 PDF</button>
+              </div>
+            <% else %>
+              <div>
+                <div class="pb" style="height:4px;margin-bottom:4px;"><div class="pf" style="width:<%= cert[:avancement] %>%"></div></div>
+                <div style="font-size:10px;color:var(--ink-60);"><%= cert[:avancement] %>% — <%= cert[:modules_restants] %> modules restants</div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Compétences + infos -->
+  <div>
+    <!-- Compétences -->
+    <div class="card" style="padding:20px;margin-bottom:16px;">
+      <div class="ts" style="margin-bottom:14px;">Compétences développées</div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <% @competences.each do |comp| %>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+              <span style="font-size:12px;font-weight:600;"><%= comp[:nom] %></span>
+              <span style="font-size:10px;color:var(--ink-60);">Niveau <%= comp[:niveau] %>/5</span>
+            </div>
+            <div class="pb" style="height:6px;border-radius:4px;">
+              <div class="pf" style="width:<%= comp[:niveau] * 20 %>%;border-radius:4px;"></div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Infos personnelles -->
+    <div class="card" style="padding:20px;">
+      <div class="ts" style="margin-bottom:14px;">Informations</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:10px;align-items:start;">
+          <div style="font-size:11px;color:var(--ink-60);width:90px;flex-shrink:0;">Email</div>
+          <div style="font-size:12px;"><%= current_user.email %></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:start;">
+          <div style="font-size:11px;color:var(--ink-60);width:90px;flex-shrink:0;">Rôle</div>
+          <div style="font-size:12px;"><%= @user_role %></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:start;">
+          <div style="font-size:11px;color:var(--ink-60);width:90px;flex-shrink:0;">Membre depuis</div>
+          <div style="font-size:12px;">Janvier 2026</div>
+        </div>
+        <div style="border-top:1px solid var(--border);margin-top:4px;padding-top:12px;">
+          <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn", style: "color:var(--red,#dc2626);border:1px solid rgba(220,38,38,.2);font-size:11px;" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

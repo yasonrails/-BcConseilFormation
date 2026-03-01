@@ -1,0 +1,108 @@
+<% content_for :page_title do %>Administration<% end %>
+
+<!-- Stats -->
+<div class="g4" style="margin-bottom:24px;">
+  <div class="card" style="padding:18px 20px;">
+    <div class="bxxs" style="margin-bottom:6px;">Apprenants actifs</div>
+    <div style="font-family:var(--serif);font-size:30px;font-weight:300;"><%= @stats[:apprenants_actifs] %></div>
+    <div style="font-size:10px;color:var(--green);margin-top:3px;">+<%= @stats[:nouveaux_mois] %> ce mois</div>
+  </div>
+  <div class="card" style="padding:18px 20px;">
+    <div class="bxxs" style="margin-bottom:6px;">Formations actives</div>
+    <div style="font-family:var(--serif);font-size:30px;font-weight:300;"><%= @stats[:formations_actives] %></div>
+    <div style="font-size:10px;color:var(--ink-60);margin-top:3px;"><%= @stats[:en_preparation] %> en préparation</div>
+  </div>
+  <div class="card" style="padding:18px 20px;">
+    <div class="bxxs" style="margin-bottom:6px;">Taux completion</div>
+    <div style="font-family:var(--serif);font-size:30px;font-weight:300;"><%= @stats[:taux_completion] %>%</div>
+    <div style="font-size:10px;color:var(--green);margin-top:3px;">+<%= @stats[:progression_taux] %>% vs mois dernier</div>
+  </div>
+  <div class="card" style="padding:18px 20px;">
+    <div class="bxxs" style="margin-bottom:6px;">CA mensuel</div>
+    <div style="font-family:var(--serif);font-size:30px;font-weight:300;"><%= @stats[:ca_mensuel] %></div>
+    <div style="font-size:10px;color:var(--green);margin-top:3px;">+<%= @stats[:evolution_ca] %> vs objectif</div>
+  </div>
+</div>
+
+<div class="g2" style="align-items:start;">
+  <!-- Tableau apprenants -->
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+      <div class="ts">Apprenants récents</div>
+      <button class="btn bo bs" style="font-size:11px;">Voir tout</button>
+    </div>
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr style="background:var(--sand);">
+          <th style="padding:10px 16px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-60);">Apprenant</th>
+          <th style="padding:10px 16px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-60);">Formation</th>
+          <th style="padding:10px 16px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-60);">Progression</th>
+          <th style="padding:10px 16px;text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-60);">Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @apprenants.each do |a| %>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:12px 16px;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div class="ava" style="width:32px;height:32px;border-radius:50%;background:<%= a[:couleur] %>;font-size:11px;"><%= a[:initiales] %></div>
+                <div>
+                  <div style="font-size:12px;font-weight:600;"><%= a[:nom] %></div>
+                  <div style="font-size:10px;color:var(--ink-60);"><%= a[:email] %></div>
+                </div>
+              </div>
+            </td>
+            <td style="padding:12px 16px;font-size:11px;color:var(--ink-60);"><%= a[:formation] %></td>
+            <td style="padding:12px 16px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div class="pb" style="height:5px;flex:1;"><div class="pf" style="width:<%= a[:progression] %>%"></div></div>
+                <span style="font-size:10px;color:var(--ink-60);width:28px;"><%= a[:progression] %>%</span>
+              </div>
+            </td>
+            <td style="padding:12px 16px;">
+              <span style="font-size:10px;padding:3px 9px;border-radius:10px;font-weight:600;
+                <%= a[:statut] == 'Actif' ? 'background:rgba(15,146,84,.1);color:var(--green);' : 'background:rgba(245,158,11,.1);color:#b45309;' %>">
+                <%= a[:statut] %>
+              </span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Sessions & Top formations -->
+  <div>
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:16px;">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);">
+        <div class="ts">Sessions à venir</div>
+      </div>
+      <div style="padding:16px;display:flex;flex-direction:column;gap:10px;">
+        <% @sessions.each do |s| %>
+          <div style="padding:14px;background:var(--sand);border-radius:var(--r8);">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <span style="font-size:12px;font-weight:600;"><%= s[:nom] %></span>
+              <span style="font-size:10px;background:rgba(28,95,255,.08);color:var(--accent);padding:2px 8px;border-radius:10px;font-weight:600;"><%= s[:date] %></span>
+            </div>
+            <div style="font-size:11px;color:var(--ink-60);margin-bottom:8px;"><%= s[:formateur] %> · <%= s[:inscrits] %> inscrits</div>
+            <div class="pb" style="height:4px;"><div class="pf" style="width:<%= s[:taux_remplissage] %>%"></div></div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="card" style="padding:20px;">
+      <div class="ts" style="margin-bottom:14px;">Top formations</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <% [["GPEC & planification", 78], ["Management RH stratégique", 65], ["People Analytics", 52]].each do |nom, pct| %>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px;">
+              <span><%= nom %></span><span style="color:var(--ink-60)"><%= pct %>%</span>
+            </div>
+            <div class="pb" style="height:5px;"><div class="pf" style="width:<%= pct %>%"></div></div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

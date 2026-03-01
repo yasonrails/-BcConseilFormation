@@ -1,0 +1,35 @@
+<div id="login-layer"
+     data-home-target="loginLayer"
+     data-action="click->home#closeLoginOnOverlay">
+  <div class="login-overlay">
+    <div class="login-box" data-action="click->home#stopPropagation">
+      <div class="login-header">
+        <div class="login-sub">Espace apprenant — Connexion sécurisée</div>
+        <button class="login-close" data-action="home#closeLogin">✕</button>
+      </div>
+
+      <%= form_with url: user_session_path, html: { class: "login-body" } do |f| %>
+        <%= f.label :email, "Adresse e-mail", class: "login-label" %>
+        <%= f.email_field :email, class: "login-input", placeholder: "prenom.nom@entreprise.fr", autofocus: true %>
+
+        <%= f.label :password, "Mot de passe", class: "login-label" %>
+        <%= f.password_field :password, class: "login-input", placeholder: "••••••••" %>
+
+        <div class="login-row">
+          <label class="login-remember">
+            <%= f.check_box :remember_me %> Se souvenir de moi
+          </label>
+          <%= link_to "Mot de passe oublié ?", new_user_password_path, class: "login-forgot" %>
+        </div>
+
+        <%= f.submit "Accéder à mon espace →", class: "login-submit" %>
+        <div class="login-divider"><span>ou</span></div>
+        <%= link_to "Créer un compte apprenant", new_user_registration_path, class: "login-register" %>
+      <% end %>
+
+      <div class="login-footer">
+        Plateforme sécurisée · Certification Qualiopi · RGPD conforme
+      </div>
+    </div>
+  </div>
+</div>

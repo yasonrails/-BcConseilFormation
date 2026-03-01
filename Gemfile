@@ -46,6 +46,9 @@ gem "autoprefixer-rails"
 gem "font-awesome-sass", "~> 6.1"
 gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
+gem "ruby-openai"          # Génération IA (modules & quiz)
+gem "pdf-reader"           # Extraction texte depuis PDF
+gem "docx", require: false # Extraction texte depuis DOCX
 
 group :development, :test do
   gem "dotenv-rails"

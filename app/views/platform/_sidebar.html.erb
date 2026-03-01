@@ -1,0 +1,64 @@
+<nav class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-top">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <%= link_to platform_dashboard_path, style: "display:flex;align-items:center;gap:8px;text-decoration:none;" do %>
+          <div class="sb-brand">BC <em>Formation</em></div>
+        <% end %>
+      </div>
+      <span class="sb-tag">LMS</span>
+    </div>
+    <div class="sb-sub">Plateforme apprenant</div>
+  </div>
+
+  <div class="sb-section">Principal</div>
+  <%= link_to platform_dashboard_path,  class: "nav-item #{current_page?(platform_dashboard_path)  ? 'active' : ''}" do %>
+    <svg class="ni" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+    <span>Tableau de bord</span>
+  <% end %>
+  <%= link_to platform_catalogue_path,  class: "nav-item #{current_page?(platform_catalogue_path)  ? 'active' : ''}" do %>
+    <svg class="ni" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M2 8h12M2 12h7"/><circle cx="13" cy="12" r="2"/></svg>
+    <span>Catalogue</span>
+    <span class="nb">24</span>
+  <% end %>
+  <%= link_to platform_formation_path,  class: "nav-item #{current_page?(platform_formation_path)  ? 'active' : ''}" do %>
+    <svg class="ni" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1L14 4.5V11L8 14.5L2 11V4.5L8 1z"/></svg>
+    <span>Mes formations</span>
+  <% end %>
+
+  <div class="sb-section">Outils</div>
+  <%= link_to platform_messagerie_path, class: "nav-item #{current_page?(platform_messagerie_path) ? 'active' : ''}" do %>
+    <svg class="ni" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 10a2 2 0 01-2 2H5l-3 3V4a2 2 0 012-2h8a2 2 0 012 2v6z"/></svg>
+    <span>Messagerie</span>
+    <span class="nb">3</span>
+  <% end %>
+
+  <div class="sb-section">Création IA</div>
+  <%= link_to platform_generateur_path, class: "nav-item #{request.path.start_with?('/plateforme/generateur') ? 'active' : ''}" do %>
+    <svg class="ni" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="8 1 10 6 15 6 11 10 13 15 8 12 3 15 5 10 1 6 6 6"/></svg>
+    <span>Générateur IA</span>
+  <% end %>
+  <%= link_to platform_supports_path, class: "nav-item #{request.path.start_with?('/plateforme/supports') ? 'active' : ''}" do %>
+    <svg class="ni" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 1h6l4 4v10H4V1z"/><path d="M10 1v4h4"/><path d="M6 8h4M6 11h4"/></svg>
+    <span>Supports de cours</span>
+  <% end %>
+
+  <div class="sb-section">Admin</div>
+  <%= link_to platform_admin_path,      class: "nav-item #{current_page?(platform_admin_path)      ? 'active' : ''}" do %>
+    <svg class="ni" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.42 1.42M11.54 11.54l1.41 1.41M3.05 12.95l1.42-1.42M11.54 4.46l1.41-1.41"/></svg>
+    <span>Administration</span>
+  <% end %>
+  <%= link_to platform_profil_path,     class: "nav-item #{current_page?(platform_profil_path)     ? 'active' : ''}" do %>
+    <svg class="ni" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.31 2.69-6 6-6s6 2.69 6 6"/></svg>
+    <span>Mon profil</span>
+  <% end %>
+
+  <div class="sb-exit">
+    <div class="sb-avatar"><%= current_user&.email&.split("@")&.first&.upcase&.first(2) || "ML" %></div>
+    <div>
+      <div class="sb-user-name"><%= current_user&.email || "Apprenant" %></div>
+      <div class="sb-user-role">Espace apprenant</div>
+    </div>
+    <%= link_to root_path, class: "sb-exit-icon", title: "Retour au site" do %>⇤<% end %>
+  </div>
+</nav>

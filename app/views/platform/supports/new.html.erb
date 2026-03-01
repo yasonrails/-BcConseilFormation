@@ -1,0 +1,19 @@
+<%# app/views/platform/supports/new.html.erb %>
+<% content_for :title, "Nouveau support" %>
+
+<div class="topbar">
+  <h1 class="topbar-title">Nouveau <em>support de cours</em></h1>
+  <%= link_to platform_supports_path, class: "btn bo bs" do %>
+    ← Supports
+  <% end %>
+</div>
+
+<div class="vp">
+  <div class="card cp gen-form-wrap">
+    <div class="gen-form-intro">
+      <h2 class="gen-form-title">Créer un support de cours</h2>
+      <p class="gen-form-sub">Uploadez un fichier existant ou saisissez directement votre contenu. L'IA se chargera ensuite de générer les modules et les quiz.</p>
+    </div>
+    <%= render "form", support: @support %>
+  </div>
+</div>

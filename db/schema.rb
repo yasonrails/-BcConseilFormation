@@ -10,9 +10,75 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_22_145638) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_01_100003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.bigint "record_id", null: false
+    t.string "record_type", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.string "content_type"
+    t.datetime "created_at", null: false
+    t.string "filename", null: false
+    t.string "key", null: false
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "cours_supports", force: :cascade do |t|
+    t.text "contenu_texte"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "statut", default: "brouillon"
+    t.string "titre", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_cours_supports_on_user_id"
+  end
+
+  create_table "module_formations", force: :cascade do |t|
+    t.text "contenu"
+    t.bigint "cours_support_id", null: false
+    t.datetime "created_at", null: false
+    t.string "duree_estimee"
+    t.jsonb "objectifs", default: []
+    t.integer "ordre", default: 0
+    t.string "statut", default: "brouillon"
+    t.string "titre", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["cours_support_id"], name: "index_module_formations_on_cours_support_id"
+    t.index ["user_id"], name: "index_module_formations_on_user_id"
+  end
+
+  create_table "quiz_questions", force: :cascade do |t|
+    t.integer "bonne_reponse", null: false
+    t.datetime "created_at", null: false
+    t.text "enonce", null: false
+    t.text "explication"
+    t.bigint "module_formation_id", null: false
+    t.jsonb "options", default: []
+    t.integer "ordre", default: 0
+    t.datetime "updated_at", null: false
+    t.index ["module_formation_id"], name: "index_quiz_questions_on_module_formation_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -25,4 +91,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_22_145638) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "cours_supports", "users"
+  add_foreign_key "module_formations", "cours_supports"
+  add_foreign_key "module_formations", "users"
+  add_foreign_key "quiz_questions", "module_formations"
 end

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plateforme — BC Conseil Formation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
+<body style="overflow:hidden;">
+
+<div class="app-shell">
+  <%= render "platform/sidebar" %>
+
+  <!-- Overlay mobile pour fermer la sidebar -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <div class="app-main" id="appMain">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <button class="tb-burger" onclick="toggleSidebar()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="topbar-title"><%= content_for(:page_title) { raw("Plateforme") } %></div>
+      <div class="tb-search">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><path d="M11 11l3 3"/></svg>
+        Rechercher…
+      </div>
+      <%= yield :topbar_actions %>
+      <button class="icon-btn">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a5 5 0 015 5v2l1.5 2.5H1.5L3 9V7a5 5 0 015-5z"/><path d="M6.5 13a1.5 1.5 0 003 0"/></svg>
+        <span class="notif-dot"></span>
+      </button>
+      <%= link_to root_path, class: "icon-btn", title: "Retour au site" do %>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3l4 5-4 5M14 8H6"/><path d="M6 13H3a1 1 0 01-1-1V4a1 1 0 011-1h3"/></svg>
+      <% end %>
+    </div>
+
+    <!-- PAGE CONTENT -->
+    <div class="view active" style="padding:26px;overflow-y:auto;height:calc(100vh - 56px);">
+      <%= render "shared/flashes" %>
+      <%= yield %>
+    </div>
+  </div>
+</div>
+
+<%= yield :modals %>
+
+<script>
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('active');
+}
+function closeSidebar() {
+  document.querySelector('.sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('active');
+}
+function toggleMod(hdr) {
+  const item = hdr.closest('.mi');
+  const was  = item.classList.contains('open');
+  document.querySelectorAll('.mi').forEach(m => m.classList.remove('open'));
+  if (!was) item.classList.add('open');
+}
+function openAiPanel(type) {
+  document.getElementById('ai-modal').style.display = 'block';
+  ['tutor','quiz','resume','path'].forEach(t => {
+    const el = document.getElementById('ai-panel-' + t);
+    if (el) el.style.display = (t === type) ? 'flex' : 'none';
+  });
+}
+function closeAiPanel(e) {
+  if (e && e.target !== document.getElementById('ai-modal')) return;
+  document.getElementById('ai-modal').style.display = 'none';
+}
+function selectQuiz(btn, correct) {
+  document.querySelectorAll('.quiz-opt').forEach(b => {
+    b.disabled = true;
+    b.classList.remove('correct', 'wrong');
+  });
+  btn.classList.add(correct ? 'correct' : 'wrong');
+  const fb = document.getElementById('quiz-feedback');
+  if (fb) fb.style.display = 'block';
+}
+</script>
+</body>
+</html>

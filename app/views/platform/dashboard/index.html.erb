@@ -1,0 +1,66 @@
+<% content_for :page_title do %>Tableau de <em>bord</em><% end %>
+
+<div class="dash-hero">
+  <div style="position:relative;z-index:1;">
+    <div class="dh-greet">Bonjour</div>
+    <div class="dh-name"><%= @user_name.split.first %> <em><%= @user_name.split.drop(1).join(" ") %></em></div>
+    <div class="dh-sub">Vous avez <%= @formations_en_cours %> modules en cours et 1 session planifiée cette semaine.</div>
+  </div>
+  <%= link_to "Reprendre ma formation →", platform_formation_path, class: "btn dh-btn" %>
+</div>
+
+<div class="g4" style="margin-bottom:16px;">
+  <div class="stat-m"><div class="sm-val"><%= @formations_en_cours %></div><div class="sm-lbl">Formations en cours</div><div class="sm-d">↑ +1 ce mois</div></div>
+  <div class="stat-m"><div class="sm-val"><%= @progression %>%</div><div class="sm-lbl">Progression globale</div><div class="sm-d">↑ +12% cette semaine</div></div>
+  <div class="stat-m"><div class="sm-val"><%= @temps_formation %></div><div class="sm-lbl">Temps de formation</div><div class="sm-d">↑ +3h ce mois</div></div>
+  <div class="stat-m"><div class="sm-val"><%= @certificats %></div><div class="sm-lbl">Certificats obtenus</div><div class="sm-d">1 en attente</div></div>
+</div>
+
+<div class="g2">
+  <div class="card">
+    <div class="cp">
+      <div class="rb" style="margin-bottom:14px;">
+        <span class="ts">Formations en cours</span>
+        <%= link_to "Voir tout", platform_formation_path, class: "btn bo bs" %>
+      </div>
+      <% [
+        { th: "c1", label: "RH", titre: "RH Fondamentaux & Recrutement",  sous: "Module 4/7 — Gestion des talents", pct: 57 },
+        { th: "c2", label: "Dr", titre: "Droit du Travail Appliqué",       sous: "Module 3/5 — Contrats & CDD",     pct: 80, cls: "g" },
+        { th: "c3", label: "Au", titre: "Conduite d'Audit RH",             sous: "Module 1/6 — Introduction",       pct: 20 },
+      ].each do |f| %>
+        <%= link_to platform_formation_path, class: "fr" do %>
+          <div class="fth <%= f[:th] %>"><%= f[:label] %></div>
+          <div class="fm">
+            <div class="fn"><%= f[:titre] %></div>
+            <div class="fs"><%= f[:sous] %></div>
+            <div style="margin-top:7px;"><div class="pb"><div class="pf <%= f[:cls] %>" style="width:<%= f[:pct] %>%"></div></div></div>
+          </div>
+          <span class="bxxs" style="flex-shrink:0"><%= f[:pct] %>%</span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <div class="card" style="margin-bottom:14px;">
+      <div class="cp">
+        <div class="ts" style="margin-bottom:12px;">Activité récente</div>
+        <div class="ai"><div class="ad g"></div><div><div class="at"><strong>Module validé</strong> — Droit du Travail M3</div><div class="atime">Aujourd'hui, 10h14</div></div></div>
+        <div class="ai"><div class="ad"></div><div><div class="at"><strong>Quiz 87%</strong> — RH Fondamentaux</div><div class="atime">Hier, 15h30</div></div></div>
+        <div class="ai"><div class="ad a"></div><div><div class="at"><strong>Session live</strong> planifiée — Audit RH</div><div class="atime">Ven. 28 fév., 14h</div></div></div>
+        <div class="ai"><div class="ad g"></div><div><div class="at"><strong>Certificat obtenu</strong> — RH Fondamentaux</div><div class="atime">18 fév. 2026</div></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="cp">
+        <div class="ts" style="margin-bottom:12px;">Prochaine session</div>
+        <div style="background:var(--accent-light);border-radius:var(--r8);padding:14px;border:1px solid rgba(28,95,255,.15);">
+          <div style="font-size:11px;color:var(--accent);font-weight:600;margin-bottom:3px;">VEN 28 FÉV — 14:00</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:3px;">Conduite d'Audit RH</div>
+          <div class="bxs">Session live · Sophie Renard</div>
+          <button class="btn ba bs" style="margin-top:10px;">Rejoindre →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
