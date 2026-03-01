@@ -1,4 +1,5 @@
 // ─── SCSS Bootstrap compat variables ────────────────────────────
+// (Toutes les CSS custom properties sont dans config/_variables.scss)
 $red:        #dc2626;
 $blue:       #1c5fff;
 $yellow:     #f59e0b;
@@ -6,63 +7,3 @@ $orange:     #e05d3a;
 $green:      #0f9254;
 $gray:       #0e0e0e;
 $light-gray: #f4f2ee;
-
-// ─── CSS Custom Properties — BC Conseil Formation ────────────────
-:root {
-  // Typographie
-  --serif: 'Cormorant Garamond', Georgia, serif;
-  --sans:  'DM Sans', system-ui, sans-serif;
-
-  // Palette texte
-  --ink:    #0e0e0e;
-  --ink-60: rgba(14, 14, 14, .6);
-  --ink-30: rgba(14, 14, 14, .3);
-  --ink-10: rgba(14, 14, 14, .08);
-
-  // Arrière-plans neutres
-  --sand:   #f4f2ee;
-  --sand-d: #eae7e1;
-  --white:  #fafafa;
-
-  // Palette RH (marque)
-  --rh-rose:        #c0446a;
-  --rh-rose-light:  #fdf0f4;
-  --rh-rose-mid:    rgba(192, 68, 106, .12);
-  --rh-plum:        #7c2d6b;
-  --rh-plum-light:  #f8eef6;
-  --rh-coral:       #e05d3a;
-  --rh-coral-light: #fef2ee;
-  --rh-warm:        #d4856a;
-  --rh-gold:        #b8893a;
-  --rh-gold-light:  #fdf6e8;
-  --rh-teal:        #2a7a7a;
-  --rh-teal-light:  #e6f4f4;
-
-  // Plateforme LMS
-  --accent:       #1c5fff;
-  --accent-light: #eef2ff;
-  --accent-mid:   rgba(28, 95, 255, .15);
-  --accent-site:  #1c5fff;
-  --green:        #0f9254;
-  --green-bg:     #e8f7ef;
-  --amber:        #b45309;
-  --amber-bg:     #fef3c7;
-  --red:          #dc2626;
-  --red-bg:       #fee2e2;
-
-  // Border radius
-  --r4:  4px;
-  --r8:  8px;
-  --r12: 12px;
-  --r16: 16px;
-  --r20: 20px;
-
-  // Ombres
-  --shadow-s: 0 1px 4px rgba(0,0,0,.07), 0 4px 12px rgba(0,0,0,.06);
-  --shadow-m: 0 4px 16px rgba(0,0,0,.09), 0 12px 32px rgba(0,0,0,.07);
-  --shadow-l: 0 8px 32px rgba(0,0,0,.12), 0 24px 64px rgba(0,0,0,.09);
-
-  // Courbes d'animation
-  --ease:     cubic-bezier(.4, 0, .2, 1);
-  --ease-out: cubic-bezier(0, 0, .2, 1);
-}

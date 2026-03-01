@@ -7,25 +7,109 @@
   </div>
 
   <% if @formations.any? %>
-    <div class="catalogue-grid">
-      <% @formations.each do |formation| %>
-        <% inscrit = @mes_ids.include?(formation.id) %>
-        <div class="catalogue-card <%= 'catalogue-card--inscrit' if inscrit %>">
-          <div class="cc-head">
+    <div class="catalogue-list">
+      <% @formations.each do |f| %>
+        <% inscrit = @mes_ids.include?(f.id) %>
+        <div class="cat-card <%= 'cat-card--inscrit' if inscrit %>">
+
+          <%# Badge + meta %>\
+          <div class="cat-card-head">
+            <div class="cat-meta-row">
+              <% if f.ref_formation.present? %>
+                <span class="cat-ref">Réf. <%= f.ref_formation %></span>
+              <% end %>
+              <% if f.categorie.present? %>
+                <span class="cat-tag"><%= f.categorie %></span>
+              <% end %>
+              <% if f.modalite.present? %>
+                <span class="cat-tag cat-tag--modalite"><%= f.modalite.humanize %></span>
+              <% end %>
+            </div>
             <% if inscrit %>
               <span class="cc-badge cc-badge--inscrit">✓ Inscrit</span>
             <% end %>
-            <div class="cc-modules-count"><%= formation.module_formations.publies.count %> module(s)</div>
           </div>
-          <h3 class="cc-title"><%= formation.titre %></h3>
-          <p class="cc-desc"><%= formation.description.to_s.truncate(120) %></p>
-          <div class="cc-footer">
-            <% if inscrit %>
-              <%= link_to "Continuer →", platform_mes_formations_path, class: "btn bp btn-sm" %>
-            <% else %>
-              <%= button_to "S'inscrire", platform_inscription_path(formation.id), method: :post, class: "btn bp btn-sm" %>
+
+          <%# Titre %>\
+          <h3 class="cat-title"><%= f.titre %></h3>
+          <% if f.description.present? %>
+            <p class="cat-desc"><%= f.description %></p>
+          <% end %>
+
+          <%# Infos pratiques %>\
+          <div class="cat-infos">
+            <% if f.duree_label.present? %>
+              <div class="cat-info-item">
+                <span class="cat-info-icon">🕐</span>
+                <span><%= f.duree_label %></span>
+              </div>
+            <% end %>
+            <% if f.prix_label.present? %>
+              <div class="cat-info-item">
+                <span class="cat-info-icon">💶</span>
+                <span><%= f.prix_label %> / pers.</span>
+              </div>
+            <% end %>
+            <% if f.max_participants.present? %>
+              <div class="cat-info-item">
+                <span class="cat-info-icon">👥</span>
+                <span>Max <%= f.max_participants %> personnes</span>
+              </div>
+            <% end %>
+            <% if f.acompte_pct.present? && f.acompte_pct > 0 %>
+              <div class="cat-info-item">
+                <span class="cat-info-icon">📝</span>
+                <span>Acompte <%= f.acompte_pct %>% à la réservation</span>
+              </div>
             <% end %>
           </div>
+
+          <%# Objectifs %>\
+          <% objectifs = Array(f.programme_json&.dig("pendant")).first(3) %>
+          <% if objectifs.any? %>
+            <div class="cat-objectifs">
+              <p class="cat-sub-label">Programme (extrait)</p>
+              <ul class="cat-obj-list">
+                <% objectifs.each do |obj| %>
+                  <li><%= obj %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <%# Public cible %>\
+          <% if f.public_cible.present? %>
+            <div class="cat-public">
+              <p class="cat-sub-label">À qui s'adresse cette formation</p>
+              <p class="cat-public-text"><%= f.public_cible.split("\n").first(3).join(" · ") %></p>
+            </div>
+          <% end %>
+
+          <%# Sessions %>\
+          <% sessions = Array(f.sessions_disponibles).first(4) %>
+          <% if sessions.any? %>
+            <div class="cat-sessions">
+              <p class="cat-sub-label">Prochaines sessions</p>
+              <div class="cat-sessions-list">
+                <% sessions.each do |s| %>
+                  <span class="cat-session-pill"><%= s %></span>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <%# CTA %>\
+          <div class="cat-footer">
+            <% if inscrit %>
+              <%= link_to "Accéder à ma formation →", platform_mes_formations_path, class: "btn bp btn-sm" %>
+            <% else %>
+              <%= button_to "S'inscrire", platform_inscription_path(f.id), method: :post, class: "btn bp btn-sm" %>
+            <% end %>
+            <% if f.financement_info.present? %>
+              <p class="cat-financement">💡 <%= f.financement_info.truncate(100) %></p>
+            <% end %>
+          </div>
+
         </div>
       <% end %>
     </div>
@@ -33,7 +117,8 @@
     <div class="empty-state">
       <div class="es-icon">📚</div>
       <h3>Aucune formation disponible</h3>
-      <p>Les formations publiées par votre organisme apparaîtront ici.</p>
+      <p>Les formations publiées apparaîtront ici.</p>
     </div>
   <% end %>
 </div>
+

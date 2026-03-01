@@ -1,0 +1,53 @@
+// ── Login modal overlay ────────────────────────────────────────
+.login-overlay {
+  position:absolute; inset:0;
+  background:rgba(14,14,14,.55); backdrop-filter:blur(8px);
+  display:flex; align-items:center; justify-content:center;
+}
+.login-box {
+  background:var(--white); width:100%; max-width:420px;
+  border-radius:20px; overflow:hidden;
+  box-shadow:var(--shadow-l);
+  animation:loginIn .4s var(--ease-out);
+}
+@keyframes loginIn { from{opacity:0;transform:scale(.95) translateY(16px)} to{opacity:1;transform:none} }
+
+.login-header {
+  background:var(--ink); padding:36px 40px; position:relative; overflow:hidden;
+  &::before { content:''; position:absolute; right:-40px; top:-40px; width:180px; height:180px; border-radius:50%; border:50px solid rgba(255,255,255,.04); }
+}
+.login-brand { font-family:var(--serif); font-size:20px; font-weight:300; color:white; position:relative; z-index:1; em{font-style:italic;color:rgba(255,255,255,.5);} }
+.login-sub   { font-size:12px; color:rgba(255,255,255,.4); margin-top:6px; position:relative; z-index:1; font-weight:300; }
+.login-close {
+  position:absolute; top:16px; right:16px; width:32px; height:32px; border-radius:50%;
+  border:none; background:rgba(255,255,255,.1); color:white; font-size:16px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:background .2s; z-index:2;
+  &:hover { background:rgba(255,255,255,.2); }
+}
+
+.login-body   { padding:36px 40px; }
+.login-label  { display:block; font-size:11px; font-weight:500; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-60); margin-bottom:7px; }
+.login-input  {
+  width:100%; padding:12px 16px; border:1px solid var(--ink-10); background:var(--sand);
+  border-radius:var(--r8); font-size:14px; font-family:var(--sans); color:var(--ink);
+  outline:none; margin-bottom:18px; transition:border-color .2s, box-shadow .2s;
+  &:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-mid); }
+}
+.login-row        { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.login-remember   { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--ink-60); cursor:pointer; input{cursor:pointer;} }
+.login-forgot     { font-size:12px; color:var(--accent); text-decoration:none; cursor:pointer; }
+.login-submit     { width:100%; padding:13px; background:var(--ink); color:white; font-size:13px; font-weight:500; font-family:var(--sans); border:none; border-radius:var(--r8); cursor:pointer; transition:background .2s,transform .15s; letter-spacing:.03em; &:hover{background:#2a2a2a;transform:translateY(-1px);} }
+.login-divider    { text-align:center; font-size:12px; color:var(--ink-30); margin:16px 0; position:relative; &::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--ink-10);} span{background:var(--white);padding:0 10px;position:relative;} }
+.login-register   { width:100%; padding:12px; background:transparent; color:var(--ink); font-size:13px; font-weight:400; font-family:var(--sans); border:1px solid var(--ink-10); border-radius:var(--r8); cursor:pointer; transition:border-color .2s,background .2s; &:hover{border-color:var(--ink-30);background:var(--sand);} }
+.login-footer     { padding:16px 40px; background:var(--sand); border-top:1px solid var(--ink-10); font-size:11px; color:var(--ink-60); text-align:center; }
+
+// ── Responsive ─────────────────────────────────────────────────
+@media (max-width:960px) {
+  .login-overlay { align-items:flex-end; }
+  .login-box     { border-radius:20px 20px 0 0; max-width:100%; animation:loginInMobile .35s var(--ease-out); }
+  @keyframes loginInMobile { from{transform:translateY(100%);opacity:0} to{transform:none;opacity:1} }
+  .login-header  { padding:28px; }
+  .login-body    { padding:24px 28px; }
+  .login-footer  { padding:14px 28px; }
+}

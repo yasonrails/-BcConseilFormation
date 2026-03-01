@@ -492,6 +492,7 @@ DEPENDENCIES
   rails (~> 8.1.2)
   rubocop-rails-omakase
   ruby-openai
+  rubyzip
   sassc-rails
   selenium-webdriver
   simple_form!

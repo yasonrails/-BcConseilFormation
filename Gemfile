@@ -51,6 +51,7 @@ gem "sassc-rails"
 gem "ruby-openai"          # Génération IA (modules & quiz)
 gem "pdf-reader"           # Extraction texte depuis PDF
 gem "docx", require: false # Extraction texte depuis DOCX
+gem "rubyzip"              # Extraction texte depuis PPTX (ZIP+XML)
 
 group :development, :test do
   gem "dotenv-rails"

@@ -1,0 +1,91 @@
+// ── PCRH teaser (home) ─────────────────────────────────────────
+.pcrh       { background:var(--sand); padding:120px 80px; }
+.pcrh-inner { display:grid; grid-template-columns:1fr 1fr; gap:120px; align-items:center; }
+.pcrh-visual { position:relative; aspect-ratio:3/4; max-height:520px; }
+.pcrh-frame  { position:absolute; inset:0; background:white; border:1px solid var(--sand-d); display:flex; flex-direction:column; justify-content:flex-end; padding:36px; overflow:hidden; }
+.pcrh-frame-bg   { position:absolute; inset:0; background:repeating-linear-gradient(-45deg,transparent,transparent 28px,rgba(14,14,14,.025) 28px,rgba(14,14,14,.025) 29px); }
+.pcrh-frame-word { position:relative; z-index:1; font-family:var(--serif); font-size:48px; font-weight:300; line-height:1; color:var(--ink); letter-spacing:-.03em; span{display:block;font-style:italic;color:var(--ink-60);font-size:34px;} }
+.pcrh-accent { position:absolute; top:-18px; right:-18px; width:72px; height:72px; background:linear-gradient(135deg,var(--rh-rose),var(--rh-plum)); }
+.pcrh-tag    { display:inline-block; font-size:11px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:white; background:linear-gradient(135deg,var(--rh-rose),var(--rh-plum)); padding:6px 14px; margin-bottom:36px; }
+.pcrh-title  { font-family:var(--serif); font-size:clamp(32px,3.5vw,48px); font-weight:300; line-height:1.15; letter-spacing:-.02em; margin-bottom:24px; em{font-style:italic;color:var(--ink-60);} }
+.pcrh-p      { font-size:14px; font-weight:300; line-height:1.75; color:var(--ink-60); margin-bottom:40px; }
+.pcrh-list   { list-style:none; margin-bottom:44px; li{font-size:13px;color:var(--ink);padding:14px 0;border-bottom:1px solid var(--sand-d);display:flex;align-items:center;gap:14px;transition:padding-left .25s var(--ease-out);} li::before{content:'—';color:var(--ink-60);font-size:11px;flex-shrink:0;} li:hover{padding-left:8px;} }
+
+// ── PCRH full page ──────────────────────────────────────────────
+.pcrh-full { background:var(--white); }
+.pcrh-hero {
+  display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;
+  padding:100px 80px; background:var(--sand); border-bottom:1px solid var(--ink-10);
+}
+.pcrh-hero-visual { position:relative; aspect-ratio:4/5; max-height:480px; }
+.pcrh-frame-img   { position:absolute; inset:0; overflow:hidden; img{width:100%;height:100%;object-fit:cover;display:block;} }
+.pcrh-frame-caption { position:absolute; bottom:0; left:0; right:0; background:rgba(14,14,14,.7); color:rgba(255,255,255,.8); font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:10px 16px; backdrop-filter:blur(4px); }
+
+.pcrh-block       { padding:80px; border-bottom:1px solid var(--ink-10); }
+.pcrh-block--sand { background:var(--sand); }
+.pcrh-block--ink  { background:linear-gradient(135deg,var(--rh-plum) 0%,var(--rh-rose) 50%,#a03060 75%,var(--rh-plum) 100%); background-size:300% 300%; animation:gradientShift 14s ease infinite; }
+.pcrh-block-inner { max-width:1100px; margin:0 auto; }
+.pcrh-block-hd    { margin-bottom:40px; }
+.pcrh-section-label       { display:inline-block; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-60); margin-bottom:14px; }
+.pcrh-section-label--light { color:rgba(255,255,255,.45); }
+.pcrh-block-title         { font-family:var(--serif); font-size:clamp(26px,3vw,40px); font-weight:300; line-height:1.2; letter-spacing:-.02em; color:var(--ink); margin:0; }
+.pcrh-block-title--light  { color:#fff; }
+
+.pcrh-two-col { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+.pcrh-pills-list { list-style:none; margin:32px 0 0; padding:0; display:grid; grid-template-columns:repeat(2,1fr); gap:12px; li{background:var(--white);border:1px solid var(--ink-10);border-radius:10px;padding:14px 18px;font-size:13px;color:var(--ink);line-height:1.4;display:flex;align-items:center;gap:10px;} li::before{content:'—';color:var(--ink-40);font-size:10px;flex-shrink:0;} }
+.pcrh-obj-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:24px; li{display:flex;gap:20px;align-items:flex-start;padding-bottom:24px;border-bottom:1px solid var(--ink-10);} li:last-child{border-bottom:none;padding-bottom:0;} }
+.pcrh-obj-num  { font-family:var(--serif); font-size:32px; font-weight:300; color:var(--ink-20); line-height:1; flex-shrink:0; width:40px; }
+.pcrh-obj-list strong { display:block; font-size:15px; font-weight:600; color:var(--ink); margin-bottom:6px; }
+.pcrh-obj-list p      { font-size:13px; color:var(--ink-60); line-height:1.65; margin:0; }
+
+.pcrh-phases        { display:flex; gap:0; align-items:stretch; margin-top:40px; }
+.pcrh-phase         { flex:1; background:var(--white); border-radius:16px; padding:32px; border:1px solid var(--ink-10); }
+.pcrh-phase-divider { display:flex; align-items:center; padding:0 20px; font-size:24px; color:var(--ink-20); flex-shrink:0; }
+.pcrh-phase-num     { display:inline-block; font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; background:var(--ink); color:#fff; padding:4px 10px; border-radius:4px; margin-bottom:10px; }
+.pcrh-phase-title   { font-family:var(--serif); font-size:20px; font-weight:400; color:var(--ink); margin:0; }
+.pcrh-phase-steps   { list-style:none; margin:24px 0 0; padding:0; display:flex; flex-direction:column; gap:12px; li{font-size:13px;color:var(--ink-60);line-height:1.55;padding-left:18px;position:relative;} li::before{content:'·';position:absolute;left:0;font-size:18px;color:var(--ink-40);top:-2px;} }
+
+.pcrh-themes-grid { margin-top:40px; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.pcrh-theme-card  { padding:24px; border:1px solid var(--ink-10); border-radius:12px; background:var(--white); transition:box-shadow .2s,transform .2s; &:hover{box-shadow:0 6px 24px rgba(0,0,0,.07);transform:translateY(-2px);} }
+.pcrh-theme-num   { font-family:var(--serif); font-size:28px; font-weight:300; color:var(--ink-15); display:block; line-height:1; margin-bottom:12px; }
+.pcrh-theme-title { font-size:14px; font-weight:700; color:var(--ink); margin-bottom:8px; }
+.pcrh-theme-desc  { font-size:12px; color:var(--ink-60); line-height:1.6; margin:0; }
+
+.pcrh-eligib-list { list-style:none; margin:24px 0 0; padding:0; display:flex; flex-direction:column; gap:16px; li{display:flex;gap:14px;align-items:flex-start;} }
+.pcrh-eligib-icon { width:22px; height:22px; border-radius:50%; flex-shrink:0; background:rgba(255,255,255,.12); color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.2); margin-top:1px; }
+.pcrh-eligib-list span:last-child { font-size:13px; color:rgba(255,255,255,.7); line-height:1.6; }
+.pcrh-eligib-list strong          { color:#fff; }
+
+.pcrh-tarif-card  { display:flex; align-items:center; gap:12px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:16px; padding:28px 32px; margin:24px 0; width:fit-content; }
+.pcrh-tarif-pct   { font-family:var(--serif); font-size:48px; font-weight:300; color:#fff; line-height:1; }
+.pcrh-tarif-lbl   { font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.45); }
+.pcrh-tarif-plus  { font-size:24px; color:rgba(255,255,255,.25); padding:0 8px; }
+.pcrh-tarif-note  { font-size:13px; color:rgba(255,255,255,.55); line-height:1.65; margin:0; strong{color:rgba(255,255,255,.85);} }
+
+.pcrh-cta-block   { padding:80px; background:var(--white); text-align:center; }
+.pcrh-cta-inner   { max-width:600px; margin:0 auto; }
+.pcrh-cta-title   { font-family:var(--serif); font-size:clamp(30px,3.5vw,46px); font-weight:300; line-height:1.15; letter-spacing:-.02em; color:var(--ink); margin:12px 0 16px; em{font-style:italic;color:var(--ink-60);} }
+.pcrh-cta-sub     { font-size:14px; color:var(--ink-60); line-height:1.7; max-width:460px; margin:0 auto 32px; }
+.pcrh-cta-buttons { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+// ── Responsive ─────────────────────────────────────────────────
+@media (max-width:1024px) {
+  .pcrh-hero, .pcrh-block { padding:60px 40px; }
+  .pcrh-themes-grid       { grid-template-columns:repeat(2,1fr); }
+  .pcrh-phases            { flex-direction:column; }
+  .pcrh-phase-divider     { padding:12px 0; transform:rotate(90deg); align-self:center; }
+}
+@media (max-width:960px) {
+  .pcrh { padding:72px 24px; }
+  .pcrh-inner  { grid-template-columns:1fr; gap:36px; }
+  .pcrh-visual { display:none; }
+}
+@media (max-width:768px) {
+  .pcrh-hero  { grid-template-columns:1fr; padding:48px 24px; gap:36px; }
+  .pcrh-hero-visual { display:none; }
+  .pcrh-block { padding:48px 24px; }
+  .pcrh-two-col, .pcrh-pills-list { grid-template-columns:1fr; gap:32px; }
+  .pcrh-themes-grid { grid-template-columns:1fr; }
+  .pcrh-cta-block   { padding:48px 24px; }
+  .pcrh-tarif-card  { flex-wrap:wrap; justify-content:center; }
+}

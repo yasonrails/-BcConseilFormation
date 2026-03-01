@@ -1,0 +1,157 @@
+<div class="platform-page">
+  <div class="topbar">
+    <div class="topbar-left">
+      <%= link_to "← #{@support.titre}", platform_admin_support_path(@support), class: "back-link" %>
+      <h1 class="page-title">Slides générées IA</h1>
+      <p class="page-sub"><%= @slides.count %> slide(s) · <%= @support.ref_formation %></p>
+    </div>
+    <div class="topbar-right">
+      <button class="btn bp" onclick="document.documentElement.requestFullscreen()">⛶ Plein écran</button>
+    </div>
+  </div>
+
+  <% if @slides.any? %>
+    <div class="slides-player"
+         data-controller="slides-player"
+         data-slides-player-total-value="<%= @slides.count %>">
+
+      <%# Barre de navigation %>
+      <div class="sp-nav">
+        <button class="sp-nav-btn" data-action="click->slides-player#prev" data-slides-player-target="prevBtn" disabled>← Préc.</button>
+        <span class="sp-nav-count" data-slides-player-target="counter">1 / <%= @slides.count %></span>
+        <button class="sp-nav-btn sp-nav-btn--primary" data-action="click->slides-player#next" data-slides-player-target="nextBtn">Suiv. →</button>
+      </div>
+
+      <%# Slides %>
+      <% @slides.each_with_index do |slide, i| %>
+        <div class="sp-slide sp-slide--<%= slide['type'] || 'contenu' %>"
+             data-slides-player-target="slide"
+             style="<%= i > 0 ? 'display:none;' : '' %>">
+
+          <% case slide["type"] %>
+          <% when "titre" %>
+            <div class="sp-titre-slide">
+              <div class="sp-num">01</div>
+              <h1 class="sp-main-title"><%= slide["titre"] %></h1>
+              <% if slide["sous_titre"].present? %>
+                <p class="sp-sous-titre"><%= slide["sous_titre"] %></p>
+              <% end %>
+            </div>
+
+          <% when "objectifs" %>
+            <div class="sp-content">
+              <h2 class="sp-slide-title">🎯 <%= slide["titre"] %></h2>
+              <ul class="sp-objectifs">
+                <% Array(slide["items"]).each do |item| %>
+                  <li><%= item %></li>
+                <% end %>
+              </ul>
+            </div>
+
+          <% when "definition" %>
+            <div class="sp-content">
+              <h2 class="sp-slide-title"><%= slide["titre"] %></h2>
+              <div class="sp-definition-box">
+                <p class="sp-definition"><strong>Définition :</strong> <%= slide["definition"] %></p>
+              </div>
+              <% if slide["exemple"].present? %>
+                <div class="sp-exemple-box">
+                  <p><strong>Exemple :</strong> <%= slide["exemple"] %></p>
+                </div>
+              <% end %>
+            </div>
+
+          <% when "chiffre_cle" %>
+            <div class="sp-content sp-content--center">
+              <h2 class="sp-slide-title"><%= slide["titre"] %></h2>
+              <div class="sp-chiffre"><%= slide["chiffre"] %></div>
+              <p class="sp-legende"><%= slide["legende"] %></p>
+            </div>
+
+          <% when "citation" %>
+            <div class="sp-content sp-content--center">
+              <blockquote class="sp-citation">
+                <p>"<%= slide["citation"] %>"</p>
+                <% if slide["auteur"].present? %>
+                  <cite>— <%= slide["auteur"] %></cite>
+                <% end %>
+              </blockquote>
+            </div>
+
+          <% when "cas_pratique" %>
+            <div class="sp-content">
+              <h2 class="sp-slide-title">🎭 <%= slide["titre"] %></h2>
+              <div class="sp-scenario-box">
+                <p><%= slide["scenario"] %></p>
+              </div>
+              <% if Array(slide["questions"]).any? %>
+                <ul class="sp-scenario-questions">
+                  <% Array(slide["questions"]).each do |q| %>
+                    <li>→ <%= q %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </div>
+
+          <% when "conclusion" %>
+            <div class="sp-content">
+              <h2 class="sp-slide-title">🔑 <%= slide["titre"] %></h2>
+              <ul class="sp-points-cles">
+                <% Array(slide["items"]).each do |item| %>
+                  <li><%= item %></li>
+                <% end %>
+              </ul>
+              <% if slide["cta"].present? %>
+                <div class="sp-cta-box">
+                  <strong>À mettre en pratique dès demain :</strong> <%= slide["cta"] %>
+                </div>
+              <% end %>
+            </div>
+
+          <% else %> <%# contenu %>
+            <div class="sp-content">
+              <h2 class="sp-slide-title"><%= slide["titre"] %></h2>
+              <% if slide["details"].present? %>
+                <p class="sp-details"><%= slide["details"] %></p>
+              <% end %>
+              <% if Array(slide["items"]).any? %>
+                <ul class="sp-items">
+                  <% Array(slide["items"]).each do |item| %>
+                    <li><%= item %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </div>
+          <% end %>
+
+          <%# Notes formateur (masquées par défaut) %>
+          <% if slide["notes"].present? %>
+            <div class="sp-notes" data-slides-player-target="notes" style="display:none">
+              <strong>📝 Note formateur :</strong> <%= slide["notes"] %>
+            </div>
+          <% end %>
+
+          <div class="sp-slide-num"><%= i + 1 %> / <%= @slides.count %></div>
+        </div>
+      <% end %>
+
+      <%# Bouton notes %>
+      <div class="sp-tools">
+        <button class="sp-tool-btn" data-action="click->slides-player#toggleNotes">
+          📝 Notes formateur
+        </button>
+        <div class="sp-progress">
+          <div class="sp-progress-bar" data-slides-player-target="progress" style="width:<%= (1.0 / @slides.count * 100).round %>%"></div>
+        </div>
+      </div>
+    </div>
+
+  <% else %>
+    <div class="empty-state">
+      <div class="es-icon">🎞️</div>
+      <h3>Aucune slide générée</h3>
+      <p>Générez des slides IA depuis la fiche du support.</p>
+      <%= link_to "← Retour au support", platform_admin_support_path(@support), class: "btn bp" %>
+    </div>
+  <% end %>
+</div>

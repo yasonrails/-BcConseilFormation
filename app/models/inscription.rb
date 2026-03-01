@@ -9,7 +9,7 @@ class Inscription < ApplicationRecord
   scope :recentes, -> { order(created_at: :desc) }
 
   def progression_percent(user)
-    total = cours_support.module_formations.publie.count
+    total = cours_support.module_formations.publies.count
     return 0 if total.zero?
     termine = user.progressions.where(module_formation: cours_support.module_formations, termine: true).count
     (termine * 100.0 / total).round

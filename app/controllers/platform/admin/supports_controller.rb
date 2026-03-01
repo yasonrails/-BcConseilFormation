@@ -59,7 +59,14 @@ module Platform
       end
 
       def support_params
-        params.require(:cours_support).permit(:titre, :description, :contenu_texte, :statut, :fichier)
+        params.require(:cours_support).permit(
+          :titre, :description, :contenu_texte, :statut, :fichier,
+          :ref_formation, :duree_jours, :duree_heures, :prix_inter,
+          :max_participants, :acompte_pct, :modalite, :categorie,
+          :public_cible, :prerequis, :financement_info,
+          :programme_avant, :programme_pendant, :programme_apres,
+          :sessions_texte
+        )
       end
     end
   end

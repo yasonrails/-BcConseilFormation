@@ -1,0 +1,55 @@
+// ── Keyframes ──────────────────────────────────────────────────
+@keyframes fadeUp       { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+@keyframes pulse        { 0%,100%{box-shadow:0 0 0 0 rgba(192,68,106,.35)} 50%{box-shadow:0 0 0 12px rgba(192,68,106,0)} }
+@keyframes shimmer      { from{background-position:-200% center} to{background-position:200% center} }
+@keyframes floatUp      { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes spinSlow     { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+@keyframes blink        { 0%,100%{opacity:1} 50%{opacity:.35} }
+@keyframes gradientShift {
+  0%   { background-position:0% 50%; }
+  50%  { background-position:100% 50%; }
+  100% { background-position:0% 50%; }
+}
+@keyframes gridDrift    { from{background-position:0 0} to{background-position:80px 80px} }
+@keyframes floatBlob    { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(20px,-30px) scale(1.08)} }
+@keyframes orbFloat     { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-20px) scale(1.05)} }
+
+// ── Scroll reveal ──────────────────────────────────────────────
+.reveal       { opacity:0; transform:translateY(28px);  transition:opacity .75s var(--ease-out), transform .75s var(--ease-out); &.visible{opacity:1;transform:none} }
+.reveal-left  { opacity:0; transform:translateX(-32px); transition:opacity .75s var(--ease-out), transform .75s var(--ease-out); &.visible{opacity:1;transform:none} }
+.reveal-right { opacity:0; transform:translateX(32px);  transition:opacity .75s var(--ease-out), transform .75s var(--ease-out); &.visible{opacity:1;transform:none} }
+.reveal-scale { opacity:0; transform:scale(.94);        transition:opacity .7s var(--ease-out),  transform .7s var(--ease-out);  &.visible{opacity:1;transform:scale(1)} }
+.d1 { transition-delay:.1s; } .d2 { transition-delay:.2s; } .d3 { transition-delay:.3s; }
+.d4 { transition-delay:.4s; } .d5 { transition-delay:.5s; }
+
+// ── Animated text effects ──────────────────────────────────────
+// Hero eyebrow shimmer
+.hero-eyebrow {
+  background:linear-gradient(90deg, var(--ink-60) 0%, var(--ink) 40%, var(--rh-rose) 60%, var(--ink-60) 100%);
+  background-size:200% auto;
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  animation:shimmer 4s linear infinite 1.5s;
+}
+// CTA em gradient shimmer
+.cta-text em {
+  background:linear-gradient(90deg, var(--rh-plum), var(--rh-rose), var(--rh-coral), var(--rh-plum));
+  background-size:250% auto;
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  animation:shimmer 5s linear infinite;
+}
+// Scroll hint float
+.scroll-hint { animation:floatUp 2.5s ease-in-out infinite 2s, fadeUp 1s var(--ease-out) 1.3s backwards; }
+
+// ── Hover micro-animations ────────────────────────────────────
+.pillar           { transition:background .3s, transform .3s var(--ease-out), box-shadow .3s; }
+.catalogue-card   { transition:box-shadow .25s, transform .25s var(--ease-out), border-color .25s; }
+.trust-logos > *  { transition:opacity .25s, transform .25s; &:hover{opacity:1 !important; transform:scale(1.1);} }
+.er-visual img    { transition:transform .7s cubic-bezier(.25,.46,.45,.94); }
+.expertise-row:hover .er-visual img { transform:scale(1.06); }
+// .ai-card hover → géré avec plus haute spécificité dans _platform.scss (.ai-section .ai-card:hover)
+.s-label::before {
+  content:''; display:inline-block; width:0; height:1px;
+  background:var(--rh-rose); vertical-align:middle; margin-right:10px;
+  transition:width .6s var(--ease-out);
+}
+.s-label.visible::before { width:24px; }

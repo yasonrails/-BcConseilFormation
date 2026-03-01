@@ -1,5 +1,18 @@
 Rails.application.routes.draw do
   devise_for :users
+
+  # ── Page de connexion dédiée admin ─────────────────
+  devise_scope :user do
+    get  "/plateforme/admin/connexion",
+         to:   "platform/admin/sessions#new",
+         as:   "platform_admin_login"
+    post "/plateforme/admin/connexion",
+         to:   "platform/admin/sessions#create"
+    delete "/plateforme/admin/deconnexion",
+         to:   "platform/admin/sessions#destroy",
+         as:   "platform_admin_logout"
+  end
+
   root to: "pages#home"
 
   # ────────────────────────────────────────────────
@@ -21,6 +34,9 @@ Rails.application.routes.draw do
           patch :publier
           patch :depublier
           post  :generer_modules, controller: "generateur"
+          post  :generer_slides,  controller: "generateur"
+          get   :slides_preview,  controller: "generateur"
+          get   :ia_statut,       controller: "generateur"
         end
         resources :modules, path: "modules", controller: "modules",
                             only: [:show, :edit, :update, :destroy] do

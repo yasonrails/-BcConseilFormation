@@ -39,6 +39,7 @@
           <div
             data-controller="generateur-module"
             data-generateur-module-modules-url-value="<%= generer_modules_platform_admin_support_path(@support) %>"
+            data-generateur-module-statut-url-value="<%= ia_statut_platform_admin_support_path(@support) %>"
             data-generateur-module-support-id-value="<%= @support.id %>">
             <button class="btn bp btn-sm" data-action="click->generateur-module#generer">
               ✨ Générer avec l'IA

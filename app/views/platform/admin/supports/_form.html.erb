@@ -1,37 +1,162 @@
 <%= form_with model: [:platform, :admin, support], class: "lms-form" do |f| %>
   <% if support.errors.any? %>
     <div class="form-errors">
-      <% support.errors.full_messages.each do |msg| %>
-        <p><%= msg %></p>
-      <% end %>
+      <% support.errors.full_messages.each do |msg| %><p><%= msg %></p><% end %>
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= f.label :titre, "Titre du support" %>
-    <%= f.text_field :titre, placeholder: "Ex : Management et Leadership", class: "form-control" %>
+  <%# ── IDENTITÉ ──────────────────────────────── %>
+  <div class="form-section">
+    <h3 class="form-section-title">Identité de la formation</h3>
+    <div class="form-row">
+      <div class="form-group fg-grow">
+        <%= f.label :titre, "Intitulé de la formation" %>
+        <%= f.text_field :titre, placeholder: "Ex : L'essentiel en gestion des RH", class: "form-control" %>
+      </div>
+      <div class="form-group fg-fixed">
+        <%= f.label :ref_formation, "Référence" %>
+        <%= f.text_field :ref_formation, placeholder: "RH001", class: "form-control" %>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <%= f.label :categorie, "Catégorie" %>
+        <%= f.select :categorie,
+            [["— choisir —", ""], *CoursSupport::CATEGORIES],
+            {}, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :modalite, "Modalité" %>
+        <%= f.select :modalite,
+            [["Présentiel", "presentiel"],["Distanciel", "distanciel"],["Hybride", "hybride"]],
+            {}, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :statut, "Statut" %>
+        <%= f.select :statut,
+            [["Brouillon", "brouillon"],["Prêt", "pret"],["Publié", "publie"]],
+            {}, class: "form-control" %>
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :description, "Accroche (courte)" %>
+      <%= f.text_area :description, rows: 2, placeholder: "Phrase d'accroche pour le catalogue…", class: "form-control" %>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= f.label :description, "Description (courte)" %>
-    <%= f.text_area :description, rows: 3, placeholder: "Décrivez brièvement ce support…", class: "form-control" %>
+  <%# ── LOGISTIQUE ──────────────────────────────── %>
+  <div class="form-section">
+    <h3 class="form-section-title">Logistique & tarifs</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <%= f.label :duree_jours, "Durée (jours)" %>
+        <%= f.number_field :duree_jours, min: 1, placeholder: "3", class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :duree_heures, "Durée (heures)" %>
+        <%= f.number_field :duree_heures, min: 1, placeholder: "21", class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :prix_inter, "Prix inter (€ HT)" %>
+        <%= f.number_field :prix_inter, step: "0.01", placeholder: "1990.00", class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :max_participants, "Max participants" %>
+        <%= f.number_field :max_participants, min: 1, placeholder: "6", class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :acompte_pct, "Acompte (%)" %>
+        <%= f.number_field :acompte_pct, min: 0, max: 100, placeholder: "20", class: "form-control" %>
+      </div>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= f.label :contenu_texte, "Contenu textuel (base de génération IA)" %>
-    <%= f.text_area :contenu_texte, rows: 12, placeholder: "Collez ici votre contenu de cours, vos notes, vos slides textuelles…\nL'IA s'en servira pour générer les modules.", class: "form-control" %>
+  <%# ── PUBLIC & PRÉREQUIS ───────────────────────── %>
+  <div class="form-section">
+    <h3 class="form-section-title">Public & conditions</h3>
+    <div class="form-row">
+      <div class="form-group fg-grow">
+        <%= f.label :public_cible, "À qui s'adresse cette formation ?" %>
+        <%= f.text_area :public_cible, rows: 4,
+            placeholder: "Une ligne par profil : RRH, Manager, Chargé de recrutement…",
+            class: "form-control" %>
+      </div>
+      <div class="form-group fg-grow">
+        <%= f.label :prerequis, "Prérequis" %>
+        <%= f.text_area :prerequis, rows: 4,
+            placeholder: "Aucun\nou une ligne par prérequis…",
+            class: "form-control" %>
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :financement_info, "Informations financement" %>
+      <%= f.text_area :financement_info, rows: 2,
+          placeholder: "Pour toute demande de prise en charge…",
+          class: "form-control" %>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= f.label :fichier, "Ou importer un fichier (PDF, DOCX, TXT)" %>
-    <%= f.file_field :fichier, class: "form-control", accept: ".pdf,.docx,.txt" %>
-    <% if support.fichier.attached? %>
-      <p class="form-hint">Fichier actuel : <%= support.fichier.filename %></p>
-    <% end %>
+  <%# ── PROGRAMME ───────────────────────────────── %>
+  <div class="form-section">
+    <h3 class="form-section-title">Programme pédagogique</h3>
+    <p class="form-hint">Une étape ou item par ligne.</p>
+    <div class="form-group">
+      <%= f.label :programme_avant, "Avant la formation" %>
+      <%= f.text_area :programme_avant, rows: 3,
+          placeholder: "Questionnaire de positionnement avant formation",
+          class: "form-control",
+          value: support.programme_avant %>
+    </div>
+    <div class="form-group">
+      <%= f.label :programme_pendant, "Pendant la formation (numérotez : 1. Module, 2. Module…)" %>
+      <%= f.text_area :programme_pendant, rows: 12,
+          placeholder: "1. Positionnement de la fonction RH\n   - L'évolution et les enjeux…\n2. Administration du personnel\n   - Formalités d'embauche…",
+          class: "form-control",
+          value: support.programme_pendant %>
+    </div>
+    <div class="form-group">
+      <%= f.label :programme_apres, "Après la formation" %>
+      <%= f.text_area :programme_apres, rows: 3,
+          placeholder: "Programme de suivi pendant 7 semaines…",
+          class: "form-control",
+          value: support.programme_apres %>
+    </div>
+  </div>
+
+  <%# ── SESSIONS ────────────────────────────────── %>
+  <div class="form-section">
+    <h3 class="form-section-title">Sessions disponibles</h3>
+    <div class="form-group">
+      <%= f.label :sessions_texte, "Dates (une par ligne)" %>
+      <%= f.text_area :sessions_texte, rows: 6,
+          placeholder: "13 et 14/01\n17 et 18/02\n10 et 11/03",
+          class: "form-control",
+          value: support.sessions_texte %>
+    </div>
+  </div>
+
+  <%# ── CONTENU IA ───────────────────────────────── %>
+  <div class="form-section">
+    <h3 class="form-section-title">Contenu pour génération IA</h3>
+    <div class="form-group">
+      <%= f.label :contenu_texte, "Texte source (base de génération modules & quiz)" %>
+      <%= f.text_area :contenu_texte, rows: 10,
+          placeholder: "Collez ici votre contenu de cours, vos notes, le programme détaillé…",
+          class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :fichier, "Ou importer un fichier (PDF, DOCX, TXT)" %>
+      <%= f.file_field :fichier, class: "form-control", accept: ".pdf,.docx,.txt" %>
+      <% if support.fichier.attached? %>
+        <p class="form-hint">Fichier actuel : <%= support.fichier.filename %></p>
+      <% end %>
+    </div>
   </div>
 
   <div class="form-actions">
-    <%= f.submit support.new_record? ? "Créer le support" : "Mettre à jour", class: "btn bp" %>
-    <%= link_to "Annuler", support.new_record? ? platform_admin_supports_path : platform_admin_support_path(support), class: "btn" %>
+    <%= f.submit support.new_record? ? "Créer la formation" : "Mettre à jour", class: "btn bp" %>
+    <%= link_to "Annuler",
+        support.new_record? ? platform_admin_supports_path : platform_admin_support_path(support),
+        class: "btn" %>
   </div>
 <% end %>

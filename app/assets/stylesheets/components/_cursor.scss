@@ -1,0 +1,17 @@
+// ── Custom cursor (desktop only) ───────────────────────────────
+.cursor {
+  position:fixed; width:8px; height:8px; background:var(--ink);
+  border-radius:50%; pointer-events:none; z-index:9999;
+  transition:transform .15s var(--ease), opacity .2s;
+  transform:translate(-50%,-50%);
+}
+.cursor-ring {
+  position:fixed; width:36px; height:36px;
+  border:1px solid rgba(14,14,14,.25); border-radius:50%;
+  pointer-events:none; z-index:9998;
+  transition:width .3s var(--ease), height .3s var(--ease), opacity .3s;
+  transform:translate(-50%,-50%);
+}
+@media (max-width:960px) {
+  .cursor, .cursor-ring { display:none; }
+}

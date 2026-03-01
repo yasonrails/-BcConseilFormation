@@ -12,7 +12,7 @@
       <% @inscriptions.each do |insc| %>
         <% formation = insc.cours_support %>
         <% modules = formation.module_formations.publies.order(:ordre) %>
-        <% nb_termines = current_user.progressions.where(module_formation: modules, termine: true).count %>
+        <% nb_termines = modules.count { |m| @progressions[m.id]&.termine? } %>
         <% pct = modules.count > 0 ? (nb_termines * 100 / modules.count) : 0 %>
 
         <div class="mf-card">
@@ -33,7 +33,7 @@
 
           <div class="mf-modules">
             <% modules.each_with_index do |mod, i| %>
-              <% prog = current_user.progressions.find_by(module_formation: mod) %>
+              <% prog = @progressions[mod.id] %>
               <div class="mf-module-item">
                 <div class="mm-status <%= prog&.termine? ? 'mm-done' : 'mm-todo' %>">
                   <%= prog&.termine? ? "✓" : (i + 1) %>

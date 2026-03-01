@@ -1,0 +1,62 @@
+// ── Reset ──────────────────────────────────────────────────────
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+
+// ── Design tokens ──────────────────────────────────────────────
+:root {
+  // Neutrals
+  --ink:     #0e0e0e;
+  --ink-80:  rgba(14,14,14,.8);
+  --ink-60:  rgba(14,14,14,.6);
+  --ink-40:  rgba(14,14,14,.4);
+  --ink-30:  rgba(14,14,14,.3);
+  --ink-20:  rgba(14,14,14,.2);
+  --ink-15:  rgba(14,14,14,.15);
+  --ink-10:  rgba(14,14,14,.08);
+  --sand:    #f4f2ee;
+  --sand-d:  #eae7e1;
+  --white:   #fafafa;
+
+  // RH Brand
+  --rh-rose:       #c0446a;  --rh-rose-light:  #fdf0f4;  --rh-rose-mid: rgba(192,68,106,.12);
+  --rh-plum:       #7c2d6b;  --rh-plum-light:  #f8eef6;
+  --rh-coral:      #e05d3a;  --rh-coral-light: #fef2ee;
+  --rh-warm:       #d4856a;
+  --rh-gold:       #b8893a;  --rh-gold-light:  #fdf6e8;
+  --rh-teal:       #2a7a7a;  --rh-teal-light:  #e6f4f4;
+
+  // Platform / UI
+  --accent:       #1c5fff;
+  --accent-site:  #1c5fff;
+  --accent-light: #eef2ff;
+  --accent-mid:   rgba(28,95,255,.15);
+  --green:        #0f9254;  --green-bg: #e8f7ef;
+  --amber:        #b45309;  --amber-bg: #fef3c7;
+  --red:          #dc2626;  --red-bg:   #fee2e2;
+
+  // Typography
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'DM Sans', system-ui, sans-serif;
+
+  // Spacing / Radii
+  --r4:  4px;
+  --r8:  8px;
+  --r12: 12px;
+  --r16: 16px;
+  --r20: 20px;
+
+  // Shadows
+  --shadow-s: 0 1px 6px rgba(0,0,0,.06), 0 2px 12px rgba(0,0,0,.04);
+  --shadow-m: 0 4px 16px rgba(0,0,0,.1),  0 8px 32px rgba(0,0,0,.06);
+  --shadow-l: 0 8px 32px rgba(0,0,0,.14), 0 24px 64px rgba(0,0,0,.08);
+
+  // Easing
+  --ease:     cubic-bezier(.4,0,.2,1);
+  --ease-out: cubic-bezier(0,.55,.45,1);
+}
+
+// ── Base ───────────────────────────────────────────────────────
+html  { font-size:15px; scroll-behavior:smooth; }
+body  { font-family:var(--sans); background:var(--white); color:var(--ink); -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+
+// Login layer host
+#login-layer { display:none; position:fixed; inset:0; z-index:2000; }

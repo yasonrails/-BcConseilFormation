@@ -1,0 +1,116 @@
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE — PLATFORM
+═══════════════════════════════════════════════════ */
+
+/* ── TOPBAR HAMBURGER ── */
+.tb-burger {
+  display: none;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r8);
+  border: 1px solid var(--ink-10);
+  background: transparent;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.tb-burger span {
+  display: block;
+  width: 16px;
+  height: 2px;
+  background: var(--ink-60);
+  border-radius: 2px;
+  transition: background .2s;
+}
+.tb-burger:hover span { background: var(--ink); }
+
+/* ── Sidebar overlay (mobile) ── */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 14, 14, .45);
+  z-index: 999;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+.sidebar-overlay.active { display: block; }
+
+/* ── TABLET (≤ 1024px) ── */
+@media (max-width: 1024px) {
+  .tb-burger { display: flex; }
+  .app-main { width: 100%; min-width: 0; }
+
+  /* Dashboard */
+  .g4 { grid-template-columns: 1fr 1fr; }
+  .dash-hero { grid-template-columns: 1fr; gap: 20px; padding: 24px 20px; }
+  .dh-sub { max-width: 100%; }
+}
+
+/* ── MOBILE (≤ 760px) ── */
+@media (max-width: 760px) {
+  .topbar { padding: 0 14px; gap: 8px; }
+  .tb-search { display: none; }
+  .topbar-title { font-size: 16px; }
+
+  /* Grids */
+  .g2, .g3, .g4 { grid-template-columns: 1fr; }
+
+  /* Catalogue : 2 col sur mobile paysage, 1 col portrait */
+  @media (min-width: 480px) {
+    .g3 { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Dashboard */
+  .dash-hero { padding: 20px 16px; }
+  .stat-m { padding: 14px 16px; }
+  .sm-val { font-size: 22px; }
+
+  /* Messagerie : liste cachée, chat plein écran */
+  .mwrap { grid-template-columns: 1fr; height: calc(100svh - 110px); }
+  .mlist { display: none; }
+  .mlist.open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: var(--white);
+    height: 100%;
+    overflow-y: auto;
+  }
+  .mhdr { padding: 12px 16px; }
+
+  /* Admin table scroll horizontal */
+  .tw { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { min-width: 560px; }
+
+  /* Profil */
+  .ph { flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px 18px; }
+  .ph::before { display: none; }
+  .pbadges { margin-top: 4px; }
+
+  /* Formation / modules */
+  .mh { padding: 12px 14px; }
+  .mexp { padding: 0 14px 12px 46px; }
+
+  /* Views */
+  .view { padding: 14px; }
+
+  /* Cards */
+  .card { border-radius: var(--r12); }
+  .cp { padding: 16px; }
+}
+
+/* ── SMALL MOBILE (≤ 480px) ── */
+@media (max-width: 480px) {
+  .g3 { grid-template-columns: 1fr; }
+  .topbar-title { font-size: 15px; }
+  .dh-name { font-size: 22px; }
+  .sm-val { font-size: 20px; }
+  .pname { font-size: 20px; }
+  .mv { font-size: 26px; }
+}
+

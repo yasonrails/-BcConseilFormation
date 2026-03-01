@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_01_300000) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_01_500000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -61,13 +61,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_01_300000) do
   end
 
   create_table "cours_supports", force: :cascade do |t|
+    t.integer "acompte_pct", default: 20
+    t.string "categorie"
     t.text "contenu_texte"
     t.datetime "created_at", null: false
     t.text "description"
+    t.integer "duree_heures"
+    t.integer "duree_jours"
+    t.text "financement_info"
+    t.integer "max_participants"
+    t.string "modalite", default: "presentiel"
+    t.text "prerequis"
+    t.decimal "prix_inter", precision: 8, scale: 2
+    t.jsonb "programme_json", default: {}
+    t.text "public_cible"
+    t.string "ref_formation"
+    t.jsonb "sessions_disponibles", default: []
     t.string "statut", default: "brouillon"
     t.string "titre", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.index ["categorie"], name: "index_cours_supports_on_categorie"
+    t.index ["ref_formation"], name: "index_cours_supports_on_ref_formation", unique: true, where: "(ref_formation IS NOT NULL)"
     t.index ["user_id"], name: "index_cours_supports_on_user_id"
   end
 
@@ -116,8 +131,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_01_300000) do
     t.text "enonce", null: false
     t.text "explication"
     t.bigint "module_formation_id", null: false
+    t.string "niveau", default: "comprehension"
     t.jsonb "options", default: []
     t.integer "ordre", default: 0
+    t.string "point_cle"
+    t.text "pourquoi"
+    t.string "type_question", default: "qcm"
     t.datetime "updated_at", null: false
     t.index ["module_formation_id"], name: "index_quiz_questions_on_module_formation_id"
   end

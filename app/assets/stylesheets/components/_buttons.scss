@@ -1,0 +1,40 @@
+// ── CTA buttons ────────────────────────────────────────────────
+.btn-dark {
+  font-size:12px; font-weight:500; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--white);
+  background:linear-gradient(135deg, var(--rh-plum) 0%, var(--rh-rose) 100%);
+  background-size:200% 200%;
+  padding:13px 26px;
+  text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+  transition:background-position .35s ease, transform .2s, box-shadow .2s;
+  border:none; cursor:pointer; font-family:var(--sans);
+  box-shadow:0 4px 18px rgba(192,68,106,.25);
+  &:hover {
+    background-position:100% 0;
+    transform:translateY(-2px);
+    box-shadow:0 6px 28px rgba(124,45,107,.45);
+    animation:pulse .6s ease-out;
+  }
+}
+.btn-ghost {
+  font-size:12px; font-weight:500; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--ink-60); text-decoration:none;
+  display:inline-flex; align-items:center; gap:8px;
+  transition:color .2s, gap .25s var(--ease-out);
+  &:hover { color:var(--ink); gap:14px; }
+}
+.btn-platform {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:14px 28px; background:white; color:var(--ink);
+  font-size:13px; font-weight:600; letter-spacing:.03em;
+  cursor:pointer; border:none; font-family:var(--sans); border-radius:4px;
+  transition:background .2s, transform .2s, box-shadow .2s; white-space:nowrap;
+  &:hover { background:#f0f0f0; transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.3); }
+}
+.btn-outline-dark {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:13px 26px; border:1px solid var(--ink); border-radius:6px;
+  font-size:13px; font-weight:500; color:var(--ink); text-decoration:none;
+  transition:background .2s, color .2s;
+  &:hover { background:var(--ink); color:#fff; }
+}

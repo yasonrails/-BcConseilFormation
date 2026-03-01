@@ -19,9 +19,7 @@
         <div class="objectifs-block">
           <h4>🎯 Ce que vous allez apprendre</h4>
           <ul>
-            <% @module.objectifs_list.each do |obj| %>
-              <li><%= obj %></li>
-            <% end %>
+            <% @module.objectifs_list.each do |obj| %><li><%= obj %></li><% end %>
           </ul>
         </div>
       <% end %>
@@ -32,66 +30,146 @@
 
       <%# ── Quiz interactif ── %>
       <% if @quiz.any? %>
-        <div class="quiz-section"
-          data-controller="quiz-player"
-          data-quiz-player-progression-url-value="<%= platform_module_progression_path(@module) %>">
+        <div class="quiz-wrap"
+          data-controller="quiz-interactif"
+          data-quiz-interactif-total-value="<%= @quiz.count %>"
+          data-quiz-interactif-progression-url-value="<%= platform_module_progression_path(@module) %>">
 
-          <div class="quiz-header">
-            <h2 class="quiz-title">📝 Quiz de validation</h2>
-            <p class="quiz-sub"><%= @quiz.count %> question(s) — Score minimum requis : 70%</p>
+          <%# En-tête quiz %>
+          <div class="qi-header">
+            <div class="qi-title-row">
+              <h2 class="qi-title">Quiz de validation</h2>
+              <div class="qi-meta">
+                <span class="qi-count" data-quiz-interactif-target="counter">1 / <%= @quiz.count %></span>
+                <span class="qi-score-live" data-quiz-interactif-target="scoreLive">0 ✓</span>
+              </div>
+            </div>
+            <%# Barre de progression %>
+            <div class="qi-progress-track">
+              <div class="qi-progress-bar" data-quiz-interactif-target="progressBar" style="width:0%"></div>
+            </div>
+            <%# Streak / concentration %>
+            <div class="qi-streak" data-quiz-interactif-target="streak" style="display:none">
+              🔥 <span data-quiz-interactif-target="streakCount">0</span> d'affilée !
+            </div>
           </div>
 
-          <div class="quiz-questions" data-quiz-player-target="questions">
+          <%# Corps — questions (une seule visible à la fois) %>
+          <div class="qi-body" data-quiz-interactif-target="body">
             <% @quiz.each_with_index do |q, i| %>
-              <div class="quiz-q" data-index="<%= i %>" data-correct="<%= q.bonne_reponse %>" style="<%= i > 0 ? 'display:none;' : '' %>">
-                <div class="quiz-q-num">Question <%= i + 1 %> / <%= @quiz.count %></div>
-                <p class="quiz-q-enonce"><%= q.enonce %></p>
-                <div class="quiz-options">
+              <div class="qi-question" data-index="<%= i %>" data-correct="<%= q.bonne_reponse %>"
+                   style="<%= i > 0 ? 'display:none;' : '' %>"
+                   data-quiz-interactif-target="question">
+
+                <%# Type + niveau badge %>
+                <div class="qi-q-meta">
+                  <span class="qi-badge qi-badge--<%= q.niveau %>">
+                    <%= q.icone_niveau %> <%= q.niveau&.humanize %>
+                  </span>
+                  <span class="qi-badge qi-badge--type">
+                    <%= q.icone_type %> <%= q.type_question&.humanize %>
+                  </span>
+                </div>
+
+                <%# Énoncé %>
+                <p class="qi-enonce"><%= q.enonce %></p>
+
+                <%# Options %>
+                <div class="qi-options">
                   <% q.options_list.each_with_index do |opt, j| %>
-                    <button class="quiz-opt" data-action="click->quiz-player#select" data-value="<%= j %>">
-                      <span class="quiz-opt-letter"><%= ("A".ord + j).chr %></span>
-                      <span><%= opt %></span>
+                    <button class="qi-opt" data-index="<%= j %>"
+                            data-action="click->quiz-interactif#repondre">
+                      <span class="qi-opt-key"><%= ("A".ord + j).chr %></span>
+                      <span class="qi-opt-label"><%= opt %></span>
+                      <span class="qi-opt-icon" style="display:none"></span>
                     </button>
                   <% end %>
                 </div>
-                <% if q.explication.present? %>
-                  <div class="quiz-explication" style="display:none;" data-quiz-player-target="explication">
-                    💡 <em><%= q.explication %></em>
-                  </div>
-                <% end %>
-                <div class="quiz-q-actions" style="display:none;" data-quiz-player-target="nextBtn">
-                  <% if i < @quiz.count - 1 %>
-                    <button class="btn bp btn-sm" data-action="click->quiz-player#next">Question suivante →</button>
-                  <% else %>
-                    <button class="btn bp" data-action="click->quiz-player#finish">Terminer et voir mon score →</button>
+
+                <%# Feedback (masqué jusqu'à réponse) %>
+                <div class="qi-feedback" data-quiz-interactif-target="feedback" style="display:none">
+                  <div class="qi-feedback-header" data-quiz-interactif-target="feedbackIcon"></div>
+                  <% if q.explication.present? %>
+                    <p class="qi-explication"><strong>💡 Explication :</strong> <%= q.explication %></p>
                   <% end %>
+                  <% if q.pourquoi.present? %>
+                    <p class="qi-pourquoi"><strong>🎯 Pourquoi c'est important :</strong> <%= q.pourquoi %></p>
+                  <% end %>
+                  <% if q.point_cle.present? %>
+                    <div class="qi-point-cle">🔑 <%= q.point_cle %></div>
+                  <% end %>
+
+                  <%# Confiance (après réponse) %>
+                  <div class="qi-confiance">
+                    <p class="qi-confiance-label">Ma confiance sur cette réponse :</p>
+                    <div class="qi-confiance-btns">
+                      <button class="qi-conf-btn" data-niveau="su" data-action="click->quiz-interactif#confiance">Je savais ✅</button>
+                      <button class="qi-conf-btn" data-niveau="devine" data-action="click->quiz-interactif#confiance">J'ai deviné 🎲</button>
+                      <button class="qi-conf-btn" data-niveau="inconnu" data-action="click->quiz-interactif#confiance">Je ne savais pas 📚</button>
+                    </div>
+                  </div>
+
+                  <%# Navigation %>
+                  <div class="qi-nav">
+                    <% if i < @quiz.count - 1 %>
+                      <button class="btn bp" data-action="click->quiz-interactif#suivant">
+                        Suivant → <small>(ou appuie sur →)</small>
+                      </button>
+                    <% else %>
+                      <button class="btn bp qi-btn-finish" data-action="click->quiz-interactif#terminer">
+                        🏁 Voir mon résultat
+                      </button>
+                    <% end %>
+                  </div>
                 </div>
               </div>
             <% end %>
           </div>
 
-          <div data-quiz-player-target="result" style="display:none;" class="quiz-result">
-            <div class="qr-score" data-quiz-player-target="scoreDisplay"></div>
-            <div class="qr-message" data-quiz-player-target="message"></div>
-            <div class="qr-actions">
-              <button class="btn" data-action="click->quiz-player#restart">Relancer le quiz</button>
-              <%= link_to "Retour à mes formations →", platform_mes_formations_path, class: "btn bp" %>
+          <%# ── Écran micro-pause (toutes les 5 questions) ── %>
+          <div class="qi-pause" data-quiz-interactif-target="pause" style="display:none">
+            <div class="qi-pause-inner">
+              <div class="qi-pause-icon">☕</div>
+              <h3>Pause 30 secondes</h3>
+              <p>Votre cerveau consolide mieux en faisant de courtes pauses. Respirez, bougez un peu !</p>
+              <button class="btn bp" data-action="click->quiz-interactif#reprendre">Je suis prêt(e) →</button>
             </div>
           </div>
-        </div>
+
+          <%# ── Résultat final ── %>
+          <div class="qi-result" data-quiz-interactif-target="result" style="display:none">
+            <div class="qi-result-inner">
+              <div class="qi-result-score" data-quiz-interactif-target="scoreDisplay"></div>
+              <div class="qi-result-label" data-quiz-interactif-target="resultLabel"></div>
+              <div class="qi-result-stats" data-quiz-interactif-target="resultStats"></div>
+
+              <%# Révision des erreurs %>
+              <div class="qi-review" data-quiz-interactif-target="review" style="display:none">
+                <h4>📚 À revoir</h4>
+                <div data-quiz-interactif-target="reviewList"></div>
+              </div>
+
+              <div class="qi-result-actions">
+                <button class="btn" data-action="click->quiz-interactif#relancer">↺ Relancer</button>
+                <%= link_to "Retour à mes formations →", platform_mes_formations_path, class: "btn bp" %>
+              </div>
+            </div>
+          </div>
+
+        </div><%# .quiz-wrap %>
       <% else %>
         <div class="quiz-unavailable">
           <p>Aucun quiz disponible pour ce module.</p>
           <%= link_to "Retour à mes formations", platform_mes_formations_path, class: "btn bp" %>
         </div>
       <% end %>
-    </div>
+    </div><%# .module-main %>
 
     <%# ── Navigation modules ── %>
     <div class="module-nav">
       <h4 class="mn-title">Modules de la formation</h4>
       <% @autres_modules.each_with_index do |m, i| %>
-        <% prog = current_user.progressions.find_by(module_formation: m) %>
+        <% prog = @progressions_par_module[m.id] %>
         <div class="mn-item <%= m.id == @module.id ? 'mn-item--active' : '' %>">
           <div class="mm-status <%= prog&.termine? ? 'mm-done' : 'mm-todo' %>">
             <%= prog&.termine? ? "✓" : (i + 1) %>

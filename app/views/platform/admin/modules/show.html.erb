@@ -38,7 +38,9 @@
           <h2 class="cp-title">Quiz (<%= @quiz.count %> question(s))</h2>
           <div
             data-controller="generateur-quiz"
-            data-generateur-quiz-url-value="<%= generer_quiz_platform_admin_support_module_path(@support, @module) %>">
+            data-generateur-quiz-url-value="<%= generer_quiz_platform_admin_support_module_path(@support, @module) %>"
+            data-generateur-quiz-statut-url-value="<%= ia_statut_platform_admin_support_path(@support) %>"
+            data-generateur-quiz-module-id-value="<%= @module.id %>">
             <button class="btn bp btn-sm" data-action="click->generateur-quiz#generer">
               ✨ Générer quiz IA
             </button>

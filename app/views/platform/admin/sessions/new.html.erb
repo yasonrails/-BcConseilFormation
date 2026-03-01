@@ -1,0 +1,71 @@
+<div class="admin-login-wrap">
+
+  <div class="al-panel">
+
+    <div class="al-brand">
+      <div class="al-logo-mark">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="url(#alg)"/>
+          <path d="M10 22L16 10L22 22" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12.5 18h7" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="alg" x1="0" y1="0" x2="32" y2="32">
+              <stop offset="0%" stop-color="#7c2d6b"/>
+              <stop offset="100%" stop-color="#c0446a"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div>
+        <p class="al-brand-name">BC Conseil Formation</p>
+        <p class="al-brand-sub">Espace Administrateur</p>
+      </div>
+    </div>
+
+    <h1 class="al-title">Connexion<br><em>sécurisée</em></h1>
+    <p class="al-desc">Accès réservé aux administrateurs de la plateforme.</p>
+
+    <% if flash[:alert] %>
+      <div class="al-alert"><%= flash[:alert] %></div>
+    <% end %>
+
+    <%= form_with url: platform_admin_login_path, method: :post, class: "al-form" do |f| %>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+      <div class="al-field">
+        <label class="al-label" for="user_email">Adresse e-mail</label>
+        <input class="al-input" type="email" name="user[email]" id="user_email"
+               autocomplete="email" autofocus required
+               placeholder="admin@bcconseilformation.fr">
+      </div>
+
+      <div class="al-field">
+        <label class="al-label" for="user_password">Mot de passe</label>
+        <input class="al-input" type="password" name="user[password]" id="user_password"
+               autocomplete="current-password" required placeholder="••••••••••">
+      </div>
+
+      <button type="submit" class="al-submit">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M8 1L14 4.5V11L8 14.5L2 11V4.5L8 1z"/>
+        </svg>
+        Accéder au tableau de bord
+      </button>
+    <% end %>
+
+    <div class="al-footer">
+      <a href="/" class="al-back">← Retour au site</a>
+    </div>
+
+  </div>
+
+  <div class="al-deco" aria-hidden="true">
+    <div class="al-deco-blob al-deco-blob--1"></div>
+    <div class="al-deco-blob al-deco-blob--2"></div>
+    <div class="al-deco-grid"></div>
+    <div class="al-deco-copy">
+      <p class="al-deco-tagline">Former. Accompagner. Transformer.</p>
+    </div>
+  </div>
+
+</div>

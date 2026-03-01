@@ -67,26 +67,6 @@ function toggleMod(hdr) {
   document.querySelectorAll('.mi').forEach(m => m.classList.remove('open'));
   if (!was) item.classList.add('open');
 }
-function openAiPanel(type) {
-  document.getElementById('ai-modal').style.display = 'block';
-  ['tutor','quiz','resume','path'].forEach(t => {
-    const el = document.getElementById('ai-panel-' + t);
-    if (el) el.style.display = (t === type) ? 'flex' : 'none';
-  });
-}
-function closeAiPanel(e) {
-  if (e && e.target !== document.getElementById('ai-modal')) return;
-  document.getElementById('ai-modal').style.display = 'none';
-}
-function selectQuiz(btn, correct) {
-  document.querySelectorAll('.quiz-opt').forEach(b => {
-    b.disabled = true;
-    b.classList.remove('correct', 'wrong');
-  });
-  btn.classList.add(correct ? 'correct' : 'wrong');
-  const fb = document.getElementById('quiz-feedback');
-  if (fb) fb.style.display = 'block';
-}
 </script>
 </body>
 </html>

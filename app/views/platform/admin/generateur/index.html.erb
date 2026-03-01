@@ -23,22 +23,43 @@
           <% if s.contenu_texte.blank? && !s.fichier.attached? %>
             <div class="gen-warning">⚠️ Ajoutez du contenu texte pour pouvoir générer des modules.</div>
           <% else %>
+            <%# ── Modules IA ── %>
             <div
               data-controller="generateur-module"
               data-generateur-module-modules-url-value="<%= generer_modules_platform_admin_support_path(s) %>"
               data-generateur-module-support-id-value="<%= s.id %>">
               <div class="gen-controls">
-                <label>Nombre de modules</label>
-                <select data-generateur-module-target="nbModules" class="form-control" style="width:80px;">
+                <label>Modules</label>
+                <select data-generateur-module-target="nbModules" class="form-control" style="width:70px;">
                   <option>2</option><option selected>3</option><option>4</option><option>5</option>
                 </select>
                 <button class="btn bp btn-sm" data-action="click->generateur-module#generer">
-                  ✨ Générer modules IA
+                  ✨ Générer modules
                 </button>
               </div>
-              <div data-generateur-module-target="status" style="display:none;margin-top:8px;font-size:12px;color:rgba(255,255,255,.5);"></div>
+              <div data-generateur-module-target="status" style="display:none;margin-top:8px;font-size:12px;color:var(--ink-60);"></div>
               <div data-generateur-module-target="results"></div>
             </div>
+
+            <%# ── Slides IA ── %>
+            <%= form_with url: generer_slides_platform_admin_support_path(s), method: :post,
+                          data: { turbo: false },
+                          class: "gen-controls", style: "margin-top:10px;" do |f| %>
+              <label>Slides</label>
+              <%= f.select :nb_slides,
+                    options_for_select([[8,8],[10,10],[12,12],[15,15],[20,20]], 12),
+                    {}, class: "form-control", style: "width:70px;" %>
+              <%= f.submit "🎞 Générer slides", class: "btn btn-outline-secondary btn-sm" %>
+            <% end %>
+
+            <%# Lien preview si slides existantes %>
+            <% if s.programme_json&.key?("slides") %>
+              <div style="margin-top:8px;">
+                <%= link_to "👁 Voir les #{s.programme_json['slides'].size} slides",
+                      slides_preview_platform_admin_support_path(s),
+                      class: "btn bp btn-sm" %>
+              </div>
+            <% end %>
           <% end %>
         </div>
       <% end %>
