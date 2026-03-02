@@ -1,22 +1,14 @@
-require "openai"
-require "json"
-
 # LmsSlidesService
 # Génère une présentation slide-by-slide depuis un support (PDF / PPTX / texte).
+# Le provider IA est sélectionné via AiProvider::Registry (ENV AI_PROVIDER ou credentials).
 # Indépendant du générateur de modules et du quiz.
 #
 class LmsSlidesService
-  MODEL   = "gpt-4o-mini"
-  TIMEOUT = 90
-
   def initialize(contenu:, nb_slides: 8, langue: "fr")
     @contenu   = contenu.to_s.strip.truncate(14_000)
     @nb_slides = nb_slides.to_i.clamp(4, 20)
     @langue    = langue
-    @client    = OpenAI::Client.new(
-      access_token:    ENV["OPENAI_API_KEY"] || Rails.application.credentials.openai_api_key,
-      request_timeout: TIMEOUT
-    )
+    @ai        = AiProvider::Registry.build
   end
 
   def generer_slides
@@ -91,30 +83,9 @@ class LmsSlidesService
       CONTENU SOURCE :
       #{@contenu}
     PROMPT
-    call_api(prompt)
-  end
-
-  private
-
-  def call_api(prompt)
-    response = @client.chat(
-      parameters: {
-        model:       MODEL,
-        messages:    [{ role: "user", content: prompt }],
-        temperature: 0.65,
-        max_tokens:  4096
-      }
-    )
-
-    raw = response.dig("choices", 0, "message", "content").to_s.strip
-    raw = raw.gsub(/\A```(?:json)?\n?/, "").gsub(/\n?```\z/, "").strip
-
-    JSON.parse(raw)
-  rescue JSON::ParserError => e
-    Rails.logger.error "LmsSlidesService JSON parse error: #{e.message}\nRaw: #{raw}"
-    raise "La réponse IA n'est pas au format JSON valide. Réessayez."
-  rescue OpenAI::Error => e
-    Rails.logger.error "LmsSlidesService OpenAI error: #{e.message}"
-    raise "Erreur API OpenAI : #{e.message}"
+    @ai.chat_json(prompt)
+  rescue AiProvider::Base::ProviderError => e
+    Rails.logger.error "LmsSlidesService: #{e.message}"
+    raise
   end
 end

@@ -1,28 +1,19 @@
-require "openai"
-require "json"
-
 # LmsQuizService
 # Génère un QCM interactif et engageant à partir du contenu d'un module.
+# Le provider IA est sélectionné via AiProvider::Registry (ENV AI_PROVIDER ou credentials).
 # Indépendant du générateur de modules et du générateur de slides.
 #
 class LmsQuizService
-  MODEL   = "gpt-4o-mini"
-  TIMEOUT = 90
-
   def initialize(nb_questions: 7, langue: "fr")
     @nb_questions = nb_questions.to_i.clamp(3, 10)
     @langue       = langue
-    @client       = OpenAI::Client.new(
-      access_token:    ENV["OPENAI_API_KEY"] || Rails.application.credentials.openai_api_key,
-      request_timeout: TIMEOUT
-    )
+    @ai           = AiProvider::Registry.build
   end
 
   # module_contenu : le texte ou HTML du module à évaluer
   def generer_quiz(module_contenu:)
-    texte = module_contenu.to_s.truncate(7_000)
-    nb    = @nb_questions
-
+    texte  = module_contenu.to_s.truncate(7_000)
+    nb     = @nb_questions
     prompt = <<~PROMPT
       Tu es un expert en gamification pédagogique et psychologie de l'apprentissage.
       Génère #{nb} questions interactives et engageantes à partir du contenu ci-dessous.
@@ -78,30 +69,9 @@ class LmsQuizService
       CONTENU DU MODULE :
       #{texte}
     PROMPT
-    call_api(prompt)
-  end
-
-  private
-
-  def call_api(prompt)
-    response = @client.chat(
-      parameters: {
-        model:       MODEL,
-        messages:    [{ role: "user", content: prompt }],
-        temperature: 0.65,
-        max_tokens:  4096
-      }
-    )
-
-    raw = response.dig("choices", 0, "message", "content").to_s.strip
-    raw = raw.gsub(/\A```(?:json)?\n?/, "").gsub(/\n?```\z/, "").strip
-
-    JSON.parse(raw)
-  rescue JSON::ParserError => e
-    Rails.logger.error "LmsQuizService JSON parse error: #{e.message}\nRaw: #{raw}"
-    raise "La réponse IA n'est pas au format JSON valide. Réessayez."
-  rescue OpenAI::Error => e
-    Rails.logger.error "LmsQuizService OpenAI error: #{e.message}"
-    raise "Erreur API OpenAI : #{e.message}"
+    @ai.chat_json(prompt)
+  rescue AiProvider::Base::ProviderError => e
+    Rails.logger.error "LmsQuizService: #{e.message}"
+    raise
   end
 end

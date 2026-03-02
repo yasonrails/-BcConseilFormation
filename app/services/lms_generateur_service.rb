@@ -1,22 +1,14 @@
-require "openai"
-require "json"
-
 # LmsGenerateurService
 # Génère la structure pédagogique complète d'une formation (modules, objectifs, sections).
-# Pour les slides → LmsSlidesService / Pour le quiz → LmsQuizService
+# Le provider IA est sélectionné via AiProvider::Registry (ENV AI_PROVIDER ou credentials).
+# Pour les slides → LmsSlidesService  /  Pour le quiz → LmsQuizService
 #
 class LmsGenerateurService
-  MODEL   = "gpt-4o-mini"
-  TIMEOUT = 90
-
   def initialize(contenu:, nb_modules: 3, langue: "fr")
     @contenu    = contenu.to_s.strip.truncate(14_000)
     @nb_modules = nb_modules.to_i.clamp(1, 8)
     @langue     = langue
-    @client     = OpenAI::Client.new(
-      access_token:    ENV["OPENAI_API_KEY"] || Rails.application.credentials.openai_api_key,
-      request_timeout: TIMEOUT
-    )
+    @ai         = AiProvider::Registry.build
   end
 
   def generer_modules
